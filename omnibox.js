@@ -80,7 +80,9 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
 
     chrome.omnibox.onInputEntered.addListener((content, disposition) => {
         let result;
-        content = beforeNavigate(content);
+        if (beforeNavigate) {
+            content = beforeNavigate(content);
+        }
         if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === content);
