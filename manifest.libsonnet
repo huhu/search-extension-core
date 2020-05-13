@@ -19,7 +19,13 @@ local content_script = {
   ):: {
     local it = self,
     _icons:: {},
-    _background_scripts:: [],
+    _background_scripts:: [
+      'core/compat.js',
+      'core/omnibox.js',
+      'core/command/base.js',
+      'core/command/history.js',
+      'core/command/manager.js',
+    ],
 
     manifest_version: 2,
     name: name,
