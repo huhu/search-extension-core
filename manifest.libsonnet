@@ -1,3 +1,12 @@
+local content_script = {
+  new(matches, js, css):: {
+    matches: matches,
+    js: js,
+    css: css,
+    run_at: 'document_start',
+  },
+};
+
 {
   /**
   * @name manifest.new
@@ -10,7 +19,7 @@
   ):: {
     local it = self,
     _icons:: {},
-    background_scripts:: [],
+    _background_scripts:: [],
 
     manifest_version: 2,
     name: name,
@@ -28,7 +37,7 @@
     },
     content_scripts: [],
     background: {
-      scripts: it.background_scripts,
+      scripts: it._background_scripts,
     },
     web_accessible_resources: [],
     permissions: [
@@ -47,15 +56,10 @@
       web_accessible_resources+: [resource],
     },
     addBackgroundScript(script):: self + {
-      background_scripts+: script,
+      _background_scripts+: script,
     },
     addContentScript(matches, js, css):: self + {
-      content_scripts+: [{
-        matches+: matches,
-        js+: js,
-        css+: css,
-        run_at: 'document_start',
-      }],
+      content_scripts+: [content_script.new(matches, js, css)],
     },
   },
 }
