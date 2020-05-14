@@ -3,17 +3,102 @@
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](LICENSE-APACHE)
 
-The core source code for search extension.
+This is the core source code repository for search extensions, written in vanilla Javascript.
 
 ## Overview
 
-This is the official git submodule powered following project:
+A list of search extensions based on this project:
 
 - [Rust Search Extension](https://github.com/huhu/rust-search-extension)
 - [Go Search Extension](https://github.com/huhu/go-search-extension)
-- More (Javascript, Java, etc)...
+- [Js Search Extension](https://github.com/huhu/js-search-extension)
+- More (Java, etc)...
 
-Everyone can build your search extension with this project.
+Everyone can build your own search extension with this project.
+
+## API
+
+#### Omnibox
+
+**constructor(defaultSuggestion, maxSuggestionSize)**
+
+```js
+let omnibox = new Omnibox(
+    // The default suggestion title.
+    defaultSuggestion="A handy search extension.",
+    // Max suggestion size for per page.
+    maxSuggestionSize=8,
+);
+```
+
+**bootstrap(config)**
+
+Bootstrap the omnibox.
+
+```js
+{
+    // The default global search function
+    onSearch: function(query){},
+    onFormat: function(index, item){},
+    onAppend: function(query){},
+    beforeNavigate: function(content) {},
+    afterNavigated: function(query, result) {},
+}
+```
+
+**addPrefixQueryEvent(prefix, event)**
+
+Add prefix query event.
+
+**addRegexQueryEvent(regex, event)**
+
+Add regex query event.
+
+**addNoCacheQueries(...queries)**
+
+Add query keyword to prevent cache result.
+
+#### QueryEvent
+
+```js
+{
+    onSearch,
+    onFormat,
+    onAppend,
+    prefix = undefined,
+    regex = undefined,
+    defaultSearch = false,
+    searchPriority = 0,
+    deduplicate = false
+}
+```
+
+#### Command
+
+An interface representing a command, you should extend this class to build a custom command.
+
+**constructor(name, description)**
+
+- name: The command name, for example `help`.
+- description: The command description, for example `Show the help messages`.
+
+**onExecute(arg)**
+
+A hook method the subclass should implement to execute the command with the `arg`.
+
+**onBlankResult(arg)**
+
+A hook method when the command result is empty.
+
+#### CommandManager
+
+**constructor(commands)**
+
+Construct the `CommandManager` with default `commands`.
+
+**addCommand(command)**
+
+Add new `Command`.
 
 ## License
 
