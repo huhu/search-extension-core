@@ -49,8 +49,8 @@ local content_script = {
     permissions: [
       'tabs',
     ],
-    addIcons(i):: self + {
-      _icons+: i,
+    addIcons(icons):: self + {
+      _icons+: icons,
     },
     addPermission(permission):: self + {
       permissions+: [permission],
@@ -59,10 +59,10 @@ local content_script = {
       content_security_policy+: policy,
     },
     addWebAccessibleResources(resource):: self + {
-      web_accessible_resources+: [resource],
+      web_accessible_resources+: if std.isArray(resource) then resource else [resource],
     },
-    addBackgroundScript(script):: self + {
-      _background_scripts+: script,
+    addBackgroundScripts(script):: self + {
+      _background_scripts+: if std.isArray(script) then script else [script],
     },
     addContentScript(matches, js, css):: self + {
       content_scripts+: [content_script.new(matches, js, css)],
