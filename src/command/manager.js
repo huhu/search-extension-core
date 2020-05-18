@@ -1,6 +1,8 @@
-function CommandManager(commands) {
+function CommandManager(...commands) {
     this.cmds = {};
-    [new HistoryCommand(), ...commands || []].forEach(cmd => this.addCommand(cmd));
+    if (commands) {
+        commands.forEach(cmd => this.addCommand(cmd));
+    }
 }
 
 CommandManager.prototype.execute = function(query) {
