@@ -8,9 +8,9 @@ class HistoryCommand extends Command {
         return history
             .filter(item => !arg || item.query.toLowerCase().indexOf(arg) > -1)
             .sort((a, b) => b.time - a.time)
-            .map(item => {
+            .map((item, index) => {
                 return {
-                    content: item.content,
+                    content: item.content + `?${index}`,
                     description: `${item.query} - ${item.description}`
                 }
             });
