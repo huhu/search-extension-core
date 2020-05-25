@@ -83,9 +83,12 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
         // Give beforeNavigate a default function
         beforeNavigate = beforeNavigate || ((_, s) => s);
         content = beforeNavigate(this.cachedQuery, content);
+        beforeNavigate = beforeNavigate || ((s) => s);
+        let rawContent = content;
+        content = beforeNavigate(content);
         if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content, disposition);
-            result = results.find(item => item.content === content);
+            result = results.find(item => item.content === rawContent);
         } else {
             content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
             if (/^(https?|file):\/\//i.test(content)) {
