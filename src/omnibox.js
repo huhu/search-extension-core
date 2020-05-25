@@ -81,13 +81,13 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
     chrome.omnibox.onInputEntered.addListener((content, disposition) => {
         let result;
         // Give beforeNavigate a default function
-        beforeNavigate = beforeNavigate || ((s) => s);
-        content = beforeNavigate(content);
+        beforeNavigate = beforeNavigate || ((_, s) => s);
+        content = beforeNavigate(this.cachedQuery, content);
         if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === content);
         } else {
-            content = beforeNavigate(this.defaultSuggestionContent);
+            content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
             if (/^(https?|file):\/\//i.test(content)) {
                 this.navigateToUrl(content, disposition);
                 result = {
@@ -183,7 +183,7 @@ class QueryEvent {
         let result = this.onSearch(input);
         return result.map((item, index) => {
             if (this.onFormat) {
-                item = this.onFormat(index, item);
+                item = this.onFormat(index, item, input);
             }
             let {content, description} = item;
             if (this.deduplicate) {
