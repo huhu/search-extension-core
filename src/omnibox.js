@@ -1,5 +1,5 @@
 const PAGE_TURNER = "-";
-const URL_PROTOCOLS = /^(https?|file|chrome-extension):\/\//i;
+const URL_PROTOCOLS = /^(https?|file|chrome-extension|moz-extension):\/\//i;
 
 function Omnibox(defaultSuggestion, maxSuggestionSize = 8) {
     this.maxSuggestionSize = maxSuggestionSize;
