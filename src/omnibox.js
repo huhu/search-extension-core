@@ -1,4 +1,5 @@
-let PAGE_TURNER = "-";
+const PAGE_TURNER = "-";
+const URL_PROTOCOLS = /^(https?|file|chrome-extension):\/\//i;
 
 function Omnibox(defaultSuggestion, maxSuggestionSize = 8) {
     this.maxSuggestionSize = maxSuggestionSize;
@@ -86,12 +87,12 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
         beforeNavigate = beforeNavigate || ((s) => s);
         let rawContent = content;
         content = beforeNavigate(content);
-        if (/^(https?|file):\/\//i.test(content)) {
+        if (URL_PROTOCOLS.test(content)) {
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === rawContent);
         } else {
             content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
-            if (/^(https?|file):\/\//i.test(content)) {
+            if (URL_PROTOCOLS.test(content)) {
                 this.navigateToUrl(content, disposition);
                 result = {
                     content,
