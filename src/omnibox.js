@@ -57,14 +57,13 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
             return;
         }
         let {query, page} = this.parse(input);
-        if (this.cachedQuery === query) {
-            results = this.cachedResult;
-        } else {
+        // Always perform search if query is a noCachedQuery, then check whether equals to cachedQuery
+        if (this.noCacheQueries.has(query) || this.cachedQuery !== query) {
             results = this.performSearch(query);
-            if (!this.noCacheQueries.has(query)) {
-                this.cachedQuery = query;
-                this.cachedResult = results;
-            }
+            this.cachedQuery = query;
+            this.cachedResult = results;
+        } else {
+            results = this.cachedResult;
         }
 
         let totalPage = Math.ceil(results.length / this.maxSuggestionSize);
