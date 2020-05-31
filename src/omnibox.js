@@ -89,6 +89,9 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
         if (URL_PROTOCOLS.test(content)) {
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === rawContent);
+            // Ensure the result.content is the latest,
+            // since the content returned by beforeNavigate() could be different from the raw one. 
+            result.content = content;
         } else {
             content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
             if (URL_PROTOCOLS.test(content)) {
