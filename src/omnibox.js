@@ -71,7 +71,12 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
         results = results
             .slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page)
             .map(({event, ...item}, index) => {
-                return event.format(item, index);
+                if (event) {
+                    return event.format(item, index);
+                } else {
+                    // onAppend result has no event.
+                    return item;
+                }
             });
         if (results.length > 0) {
             let {content, description} = results.shift();
