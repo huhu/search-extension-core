@@ -1,0 +1,8 @@
+.idea
+.DS_Store
+*.crx
+*.pem
+web-ext-artifacts
+node_modules
+target
+manifest.json
