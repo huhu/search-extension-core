@@ -67,7 +67,12 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
         }
 
         let totalPage = Math.ceil(results.length / this.maxSuggestionSize);
-        results = results.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
+        // Slice the page data then format this data.
+        results = results
+            .slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page)
+            .map(({event, ...item}, index) => {
+                return event.format(item, index);
+            });
         if (results.length > 0) {
             let {content, description} = results.shift();
             // Store the default description temporary.
@@ -90,7 +95,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === rawContent);
             // Ensure the result.content is the latest,
-            // since the content returned by beforeNavigate() could be different from the raw one. 
+            // since the content returned by beforeNavigate() could be different from the raw one.
             if (result) {
                 result.content = content;
             }
@@ -185,20 +190,30 @@ class QueryEvent {
         this.defaultSearch = defaultSearch;
         this.searchPriority = searchPriority;
         this.deduplicate = deduplicate;
+
+        // The search keyword the user inputted for searching.
+        this.searchedInput = "";
     }
 
     performSearch(input) {
+        this.searchedInput = input;
         let result = this.onSearch(input);
-        return result.map((item, index) => {
-            if (this.onFormat) {
-                item = this.onFormat(index, item, input);
-            }
-            let {content, description} = item;
-            if (this.deduplicate) {
-                // Deduplicate content
-                content += `?${index}`
-            }
-            return {content, description};
+        return result.map(item => {
+            item['event'] = this;
+            return item;
         });
+    }
+
+    // Format the result item.
+    format(item, index) {
+        if (this.onFormat) {
+            item = this.onFormat(index, item, this.searchedInput);
+        }
+        let {content, description} = item;
+        if (this.deduplicate) {
+            // Deduplicate content
+            content += `?${index}`;
+        }
+        return {content, description};
     }
 }
