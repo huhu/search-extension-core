@@ -18,7 +18,7 @@ Everyone can build your own search extension with this project.
 
 ## API
 
-#### Omnibox
+### Omnibox
 
 **constructor(defaultSuggestion, maxSuggestionSize)**
 
@@ -58,13 +58,13 @@ Add regex query event.
 
 Add query keyword to prevent cache result.
 
-#### QueryEvent
+### QueryEvent
 
 ```js
 {
     onSearch,
-    onFormat,
-    onAppend,
+    onFormat = undefined,
+    onAppend = undefined,
     prefix = undefined,
     regex = undefined,
     defaultSearch = false,
@@ -73,7 +73,7 @@ Add query keyword to prevent cache result.
 }
 ```
 
-#### Command
+### Command
 
 An interface representing a command, you should extend this class to build a custom command.
 
@@ -90,7 +90,7 @@ A hook method the subclass should implement to execute the command with the `arg
 
 A hook method when the command result is empty.
 
-#### CommandManager
+### CommandManager
 
 **constructor(commands)**
 
@@ -109,7 +109,7 @@ Licensed under either of
 
 at your option.
 
-#### Contribution
+## Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be

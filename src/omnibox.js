@@ -183,11 +183,13 @@ Omnibox.prototype.addNoCacheQueries = function(...queries) {
 
 class QueryEvent {
     constructor({
-                    onSearch, onFormat, onAppend,
+                    onSearch, onFormat = undefined, onAppend = undefined,
                     prefix = undefined, regex = undefined,
                     defaultSearch = false, searchPriority = 0, deduplicate = false
                 }) {
+        // The search function which should return a object array.
         this.onSearch = onSearch;
+        // The format function which should return {content, description} object.
         this.onFormat = onFormat;
         this.onAppend = onAppend;
         this.prefix = prefix;
@@ -204,6 +206,7 @@ class QueryEvent {
         this.searchedInput = input;
         let result = this.onSearch(input);
         return result.map(item => {
+            // FIXME: item could be a non-object type, maybe we need Typescript to fix this...
             item['event'] = this;
             return item;
         });
