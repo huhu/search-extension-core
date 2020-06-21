@@ -23,6 +23,7 @@ local content_script = {
       'core/compat.js',
       'core/omnibox.js',
       'core/command/base.js',
+      'core/command/simple.js',
       'core/command/history.js',
       'core/command/manager.js',
     ],
