@@ -25,7 +25,7 @@ class HistoryCommand extends Command {
 
     static record(query, result) {
         // Ignore the command history
-        if (query.startsWith(":") || !result) return;
+        if (!query || query.startsWith(":") || !result) return;
         let history = JSON.parse(localStorage.getItem("history")) || [];
         history.push({query, ...result, time: Date.now()});
         localStorage.setItem("history", JSON.stringify(history));
