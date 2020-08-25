@@ -10,7 +10,7 @@ function Compat() {
 Compat.prototype.browserType = function() {
     let userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.indexOf("firefox") !== -1) return "firefox";
-    if (userAgent.indexOf("edge") !== -1) return "edge";
+    if (userAgent.indexOf("edg") !== -1) return "edge";
     if (userAgent.indexOf("chrome") !== -1) return "chrome";
     return "unknown";
 };
