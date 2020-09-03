@@ -11,6 +11,7 @@ A list of search extensions based on this project:
 
 - [Rust Search Extension](https://github.com/huhu/rust-search-extension)
 - [Go Search Extension](https://github.com/huhu/go-search-extension)
+- [C/C++ Search Extension](https://github.com/huhu/cpp-search-extension)
 - [Js Search Extension](https://github.com/huhu/js-search-extension)
 - More (Java, etc)...
 
@@ -68,8 +69,7 @@ Add query keyword to prevent cache result.
     prefix = undefined,
     regex = undefined,
     defaultSearch = false,
-    searchPriority = 0,
-    deduplicate = false
+    searchPriority = 0
 }
 ```
 
