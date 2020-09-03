@@ -190,7 +190,7 @@ class QueryEvent {
     constructor({
                     onSearch, onFormat = undefined, onAppend = undefined,
                     prefix = undefined, regex = undefined,
-                    defaultSearch = false, searchPriority = 0, deduplicate = false
+                    defaultSearch = false, searchPriority = 0,
                 }) {
         // The search function which should return a object array.
         this.onSearch = onSearch;
@@ -201,7 +201,6 @@ class QueryEvent {
         this.regex = regex;
         this.defaultSearch = defaultSearch;
         this.searchPriority = searchPriority;
-        this.deduplicate = deduplicate;
 
         // The search keyword the user inputted for searching.
         this.searchedInput = "";
@@ -222,11 +221,6 @@ class QueryEvent {
         if (this.onFormat) {
             item = this.onFormat(index, item, this.searchedInput);
         }
-        let {content, description} = item;
-        if (this.deduplicate) {
-            // Deduplicate content
-            content += `?${index}`;
-        }
-        return {content, description};
+        return item;
     }
 }
