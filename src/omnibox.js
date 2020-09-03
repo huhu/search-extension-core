@@ -13,7 +13,7 @@ function Omnibox(defaultSuggestion, maxSuggestionSize = 8) {
     this.noCacheQueries = new Set();
 }
 
-Omnibox.prototype.setDefaultSuggestion = function(description, content) {
+Omnibox.prototype.setDefaultSuggestion = function (description, content) {
     chrome.omnibox.setDefaultSuggestion({description});
 
     if (content) {
@@ -21,7 +21,7 @@ Omnibox.prototype.setDefaultSuggestion = function(description, content) {
     }
 };
 
-Omnibox.prototype.parse = function(input) {
+Omnibox.prototype.parse = function (input) {
     let parsePage = (arg) => {
         return [...arg].filter(c => c === PAGE_TURNER).length + 1;
     };
@@ -44,7 +44,7 @@ Omnibox.prototype.parse = function(input) {
     return {query: query.join(" "), page};
 };
 
-Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavigate, afterNavigated}) {
+Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, beforeNavigate, afterNavigated}) {
     this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
     let results;
@@ -67,16 +67,21 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
         }
 
         let totalPage = Math.ceil(results.length / this.maxSuggestionSize);
+        let uniqueUrls = new Set();
         // Slice the page data then format this data.
         results = results
             .slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page)
             .map(({event, ...item}, index) => {
                 if (event) {
-                    return event.format(item, index);
-                } else {
-                    // onAppend result has no event.
-                    return item;
+                    // onAppend result has event.
+                    item = event.format(item, index);
                 }
+                if (uniqueUrls.has(item.content)) {
+                    item.content += `?${uniqueUrls.size + 1}`;
+                } else {
+                    uniqueUrls.add(item.content);
+                }
+                return item;
             });
         if (results.length > 0) {
             let {content, description} = results.shift();
@@ -123,7 +128,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
     });
 };
 
-Omnibox.prototype.performSearch = function(query) {
+Omnibox.prototype.performSearch = function (query) {
     let result;
     let matchedEvent = this.queryEvents.find(event => {
         return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
@@ -147,14 +152,14 @@ Omnibox.prototype.performSearch = function(query) {
     return result;
 };
 
-Omnibox.prototype.addPrefixQueryEvent = function(prefix, event) {
+Omnibox.prototype.addPrefixQueryEvent = function (prefix, event) {
     this.queryEvents.push(new QueryEvent({
         prefix,
         ...event,
     }));
 };
 
-Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
+Omnibox.prototype.addRegexQueryEvent = function (regex, event) {
     this.queryEvents.push(new QueryEvent({
         regex,
         ...event,
@@ -165,7 +170,7 @@ Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
 // - currentTab: enter (default)
 // - newForegroundTab: alt + enter
 // - newBackgroundTab: meta + enter
-Omnibox.prototype.navigateToUrl = function(url, disposition) {
+Omnibox.prototype.navigateToUrl = function (url, disposition) {
     url = url.replace(/\?\d+$/ig, "");
     if (disposition === "currentTab") {
         chrome.tabs.query({active: true}, tab => {
@@ -177,7 +182,7 @@ Omnibox.prototype.navigateToUrl = function(url, disposition) {
     }
 };
 
-Omnibox.prototype.addNoCacheQueries = function(...queries) {
+Omnibox.prototype.addNoCacheQueries = function (...queries) {
     queries.forEach(query => this.noCacheQueries.add(query));
 };
 
