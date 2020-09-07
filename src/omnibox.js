@@ -78,9 +78,8 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, beforeNav
                 }
                 if (uniqueUrls.has(item.content)) {
                     item.content += `?${uniqueUrls.size + 1}`;
-                } else {
-                    uniqueUrls.add(item.content);
                 }
+                uniqueUrls.add(item.content);
                 return item;
             });
         if (results.length > 0) {
