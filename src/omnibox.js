@@ -44,7 +44,7 @@ Omnibox.prototype.parse = function (input) {
     return {query: query.join(" "), page};
 };
 
-Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, beforeNavigate, afterNavigated}) {
+Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNavigate, beforeNavigate, afterNavigated}) {
     this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
     let results;
@@ -116,6 +116,8 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, beforeNav
                     content,
                     description: defaultDescription,
                 };
+            } else {
+                onEmptyNavigate && onEmptyNavigate(content || rawContent);
             }
         }
 
