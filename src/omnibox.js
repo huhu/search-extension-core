@@ -101,7 +101,7 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNa
         let rawContent = content;
         content = beforeNavigate(this.cachedQuery, content);
         if (URL_PROTOCOLS.test(content)) {
-            this.navigateToUrl(content, disposition);
+            Omnibox.navigateToUrl(content, disposition);
             result = results.find(item => item.content === rawContent);
             // Ensure the result.content is the latest,
             // since the content returned by beforeNavigate() could be different from the raw one.
@@ -111,13 +111,13 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNa
         } else {
             content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
             if (URL_PROTOCOLS.test(content)) {
-                this.navigateToUrl(content, disposition);
+                Omnibox.navigateToUrl(content, disposition);
                 result = {
                     content,
                     description: defaultDescription,
                 };
             } else {
-                onEmptyNavigate && onEmptyNavigate(content || rawContent);
+                onEmptyNavigate && onEmptyNavigate(content || rawContent, disposition);
             }
         }
 
@@ -171,7 +171,7 @@ Omnibox.prototype.addRegexQueryEvent = function (regex, event) {
 // - currentTab: enter (default)
 // - newForegroundTab: alt + enter
 // - newBackgroundTab: meta + enter
-Omnibox.prototype.navigateToUrl = function (url, disposition) {
+Omnibox.navigateToUrl = function (url, disposition) {
     url = url.replace(/\?\d+$/ig, "");
     if (disposition === "currentTab") {
         chrome.tabs.query({active: true}, tab => {
