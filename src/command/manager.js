@@ -31,7 +31,7 @@ CommandManager.prototype.execute = function (query) {
             ];
         } else {
             return [
-                {content: "", description: `Not command found ${c.match(":" + name)}, try following commands?`},
+                {content: "", description: `No ${c.match(":" + name)} command found, try following commands?`},
                 ...list
             ];
         }
