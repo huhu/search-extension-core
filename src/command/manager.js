@@ -1,25 +1,28 @@
 function CommandManager(...commands) {
-    this.cmds = {};
-    if (commands) {
-        commands.forEach(cmd => this.addCommand(cmd));
-    }
+    this.cmds = [];
+    this.cmds.push(...commands);
 }
 
-CommandManager.prototype.execute = function(query) {
+CommandManager.prototype.execute = function (query) {
     query = query.replace(":", "").trim();
-    let [cmd, arg] = query.split(" ");
-    if (cmd in this.cmds) {
-        return this[cmd](arg);
+    let [name, arg] = query.split(" ");
+    let command = this.cmds.find(cmd => cmd.name === name);
+    if (command) {
+        let result = command.onExecute(arg);
+        if (!result || result.length < 1) {
+            result = command.onBlankResult(arg);
+        }
+        return result;
     } else {
-        let list = Object.entries(this.cmds)
-            .map(([name, description]) => {
+        let list = this.cmds
+            .map(cmd => {
                 return {
-                    content: `:${name}`,
-                    description: `${c.match(":" + name)} - ${c.dim(description)}`
+                    content: `:${cmd.name}`,
+                    description: `${c.match(":" + cmd.name)} - ${c.dim(cmd.description)}`
                 }
             });
 
-        let result = list.filter((item) => cmd && item.content.indexOf(cmd) > -1);
+        let result = list.filter((item) => name && item.content.indexOf(name) > -1);
         if (result.length > 0) {
             // Filter commands with prefix
             return [
@@ -28,27 +31,9 @@ CommandManager.prototype.execute = function(query) {
             ];
         } else {
             return [
-                {content: "", description: `Not command found ${c.match(":" + cmd)}, try following commands?`},
+                {content: "", description: `Not command found ${c.match(":" + name)}, try following commands?`},
                 ...list
             ];
         }
     }
-};
-
-CommandManager.prototype.addCommand = function(command) {
-    if (command.name in this.cmds) {
-        return false;
-    }
-
-    this.cmds[command.name] = command.description;
-    Object.defineProperty(CommandManager.prototype, command.name, {
-        value: (arg) => {
-            let result = command.onExecute(arg);
-            if (!result || result.length < 1) {
-                result = command.onBlankResult(arg);
-            }
-
-            return result;
-        }
-    });
 };
