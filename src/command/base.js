@@ -7,6 +7,10 @@ class Command {
     onExecute(arg) {
     }
 
+    // A hook method called when press enter on command directly.
+    onEnter(content) {
+    }
+
     // A hook method called when the onExecute()'s result is empty.
     onBlankResult(arg) {
         return [];

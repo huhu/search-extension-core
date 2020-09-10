@@ -37,3 +37,13 @@ CommandManager.prototype.execute = function (query) {
         }
     }
 };
+
+CommandManager.prototype.handleCommandEnterEvent = function (content) {
+    if (content) {
+        content = content.replace(":", "").trim();
+        let command = this.cmds.find(cmd => cmd.name === content);
+        if (command) {
+            command.onEnter(content);
+        }
+    }
+}
