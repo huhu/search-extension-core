@@ -43,7 +43,7 @@ CommandManager.prototype.handleCommandEnterEvent = function (content, dispositio
         content = content.replace(":", "").trim();
         let command = this.cmds.find(cmd => cmd.name === content);
         if (command) {
-            command.onEnter(content);
+            command.onEnter(content, disposition);
         }
     }
 }
