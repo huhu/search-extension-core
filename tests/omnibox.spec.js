@@ -9,6 +9,8 @@ describe("Omnibox", function() {
             ["!actix", {query: "!actix", page: 1}],
             ["!actix -", {query: "!actix", page: 2}],
             ["!actix --", {query: "!actix", page: 3}],
+            ["operator- --", {query: "operator-", page: 3}],
+            ["operator new --", {query: "operator new", page: 3}],
             [":book rust", {query: ":book rust", page: 1}],
             [":book rust ", {query: ":book rust", page: 1}],
             [":book rust - ", {query: ":book rust", page: 2}],
