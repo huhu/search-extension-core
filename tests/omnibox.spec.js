@@ -4,6 +4,8 @@ describe("Omnibox", function() {
     });
     describe(".parse()", function() {
         let inputs = [
+            ["std::FILE", {query: "std::FILE", page: 1}],
+            ["std::File", {query: "std::File", page: 1}],
             ["cfg", {query: "cfg", page: 1}],
             [" cfg ", {query: "cfg", page: 1}],
             ["!actix", {query: "!actix", page: 1}],

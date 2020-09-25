@@ -25,7 +25,7 @@ Omnibox.prototype.parse = function (input) {
     let parsePage = (arg) => {
         return [...arg].filter(c => c === PAGE_TURNER).length + 1;
     };
-    let args = input.toLowerCase().trim().split(" ");
+    let args = input.trim().split(" ");
     let query = undefined, page = 1;
     if (args.length === 1) {
         // Case: {keyword}
