@@ -48,6 +48,7 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNa
     this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
     let results;
+    let currentInput;
     let defaultDescription;
 
     chrome.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
@@ -56,6 +57,8 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNa
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
             return;
         }
+
+        currentInput = input;
         let {query, page} = this.parse(input);
         // Always perform search if query is a noCachedQuery, then check whether equals to cachedQuery
         if (this.noCacheQueries.has(query) || this.cachedQuery !== query) {
@@ -97,28 +100,38 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNa
         // Give beforeNavigate a default function
         beforeNavigate = beforeNavigate || ((_, s) => s);
 
-        // Store raw content before navigate to find the correct result
-        let rawContent = content;
-        content = beforeNavigate(this.cachedQuery, content);
-        if (URL_PROTOCOLS.test(content)) {
-            Omnibox.navigateToUrl(content, disposition);
-            result = results.find(item => item.content === rawContent);
-            // Ensure the result.content is the latest,
-            // since the content returned by beforeNavigate() could be different from the raw one.
-            if (result) {
-                result.content = content;
-            }
-        } else {
+        // A flag indicates whether the url navigate success
+        let navigated = false;
+        if (content === currentInput) {
             content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
             if (URL_PROTOCOLS.test(content)) {
                 Omnibox.navigateToUrl(content, disposition);
+                navigated = true;
+
                 result = {
                     content,
                     description: defaultDescription,
                 };
-            } else {
-                onEmptyNavigate && onEmptyNavigate(content || rawContent, disposition);
             }
+        } else {
+            // Store raw content before navigate to find the correct result
+            let rawContent = content;
+            content = beforeNavigate(this.cachedQuery, content);
+            if (URL_PROTOCOLS.test(content)) {
+                Omnibox.navigateToUrl(content, disposition);
+                navigated = true;
+
+                result = results.find(item => item.content === rawContent);
+                // Ensure the result.content is the latest,
+                // since the content returned by beforeNavigate() could be different from the raw one.
+                if (result) {
+                    result.content = content;
+                }
+            }
+        }
+
+        if (!navigated && onEmptyNavigate) {
+            onEmptyNavigate(content, disposition);
         }
 
         if (afterNavigated) {
