@@ -24,6 +24,7 @@ local content_script = {
       'core/omnibox.js',
       'core/command/base.js',
       'core/command/simple.js',
+      'core/command/stats.js',
       'core/command/history.js',
       'core/command/manager.js',
     ],
