@@ -1,7 +1,18 @@
 function CommandManager(...commands) {
     this.cmds = [];
-    this.cmds.push(...commands);
+    commands.forEach(command => this.addCommand(command));
 }
+
+CommandManager.prototype.addCommand = function (command) {
+    if (!command) return;
+
+    let index = this.cmds.findIndex(cmd => cmd.name === command.name);
+    if (index === -1) {
+        this.cmds.push(command);
+    } else {
+        this.cmds.splice(index, 1, command);
+    }
+};
 
 CommandManager.prototype.execute = function (query) {
     query = query.replace(":", "").trim();
