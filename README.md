@@ -42,6 +42,7 @@ Bootstrap the omnibox.
     onSearch: function(query){},
     onFormat: function(index, item){},
     onAppend: function(query){},
+    onEmptyNavigate: function(content, disposition) {},
     beforeNavigate: function(content) {},
     afterNavigated: function(query, result) {},
 }
@@ -90,15 +91,29 @@ A hook method the subclass should implement to execute the command with the `arg
 
 A hook method when the command result is empty.
 
+**onEnter(content, disposition)**
+
+A hook method called when press enter on command directly.
+
 ### CommandManager
 
 **constructor(commands)**
 
 Construct the `CommandManager` with default `commands`.
 
-**addCommand(command)**
+**execute(query)**
 
-Add new `Command`.
+Execute command according matched query.
+
+**handleCommandEnterEvent(content, disposition)**
+
+Handle command `enter` event.
+
+## Builtin commands
+
+- HistoryCommand
+- SimpleCommand
+- StatsCommand
 
 ## License
 
