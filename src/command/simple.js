@@ -4,7 +4,7 @@
 class SimpleCommand extends Command {
     constructor(name, description, index) {
         super(name, description);
-        this.index = index;
+        this.setIndex(index);
     }
 
     onExecute(arg) {
@@ -21,5 +21,9 @@ class SimpleCommand extends Command {
                     description,
                 }
             });
+    }
+
+    setIndex(index) {
+        this.index = index;
     }
 }
