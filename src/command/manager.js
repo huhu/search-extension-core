@@ -15,7 +15,7 @@ CommandManager.prototype.addCommand = function (command) {
 };
 
 CommandManager.prototype.execute = function (query) {
-    query = query.replace(":", "").trim();
+    query = query.replace(":", "").trim().toLowerCase();
     let [name, arg] = query.split(" ");
     let command = this.cmds.find(cmd => cmd.name === name);
     if (command) {
