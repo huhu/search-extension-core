@@ -7,7 +7,8 @@ manifest.new(
   description='search...',
 )
 .addIcons({ '16': 'aaa.png', '32': 'bbb.png' })
-.addPermission('activeTab')
+.addPermissions('activeTab')
+.addPermissions(['storage', 'unlimitedStorage'])
 .addWebAccessibleResources('test.js')
 .addBackgroundScripts(['main.js', 'app.js'])
 .addContentScript(
