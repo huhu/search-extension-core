@@ -31,11 +31,6 @@ Compat.prototype.escape = function(str) {
         : str;
 };
 
-// Compatibly get extension's background page.
-Compat.prototype.getBackgroundPage = function() {
-    return chrome.extension.getBackgroundPage();
-};
-
 Compat.prototype.normalizeDate = function(date) {
     let month = '' + (date.getMonth() + 1),
         day = '' + date.getDate(),
