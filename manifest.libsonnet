@@ -1,9 +1,10 @@
 local content_script = {
-  new(matches, js, css):: {
+  new(matches, js, css, exclude_matches):: {
     matches: matches,
     js: js,
     css: css,
     run_at: 'document_start',
+    exclude_matches: exclude_matches,
   },
 };
 
@@ -67,8 +68,8 @@ local content_script = {
     addBackgroundScripts(script):: self + {
       _background_scripts+: if std.isArray(script) then script else [script],
     },
-    addContentScript(matches, js, css):: self + {
-      content_scripts+: [content_script.new(matches, js, css)],
+    addContentScript(matches, js, css, exclude_matches = []):: self + {
+      content_scripts+: [content_script.new(matches, js, css, exclude_matches)],
     },
   },
 }
