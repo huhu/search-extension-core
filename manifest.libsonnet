@@ -1,11 +1,12 @@
 local content_script = {
-  new(matches, js, css, exclude_matches):: {
+  // Using std.prune() function to remove all "empty" members
+  new(matches, js, css, exclude_matches):: std.prune({
     matches: matches,
     js: js,
     css: css,
     run_at: 'document_start',
     exclude_matches: exclude_matches,
-  },
+  }),
 };
 
 {
