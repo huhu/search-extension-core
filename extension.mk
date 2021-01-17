@@ -7,5 +7,8 @@ edge: clean
 firefox: clean
 	@jsonnet -J core manifest.jsonnet --ext-str browser=firefox -o extension/manifest.json
 
+pack:
+	web-ext build -s extension -o
+
 clean:
 	@rm -rf extension/manifest.json
