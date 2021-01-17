@@ -144,9 +144,17 @@ Omnibox.prototype.bootstrap = function ({onSearch, onFormat, onAppend, onEmptyNa
 
 Omnibox.prototype.performSearch = function (query) {
     let result;
-    let matchedEvent = this.queryEvents.find(event => {
-        return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
-    });
+    let matchedEvent = this.queryEvents
+        .sort((a, b) => {
+            // Descend sort query events by prefix length to prioritize
+            // the longer prefix than the shorter one when performing matches
+            if (a.prefix && b.prefix) {
+                return b.prefix.length - a.prefix.length;
+            }
+            return 0;
+        }).find(event => {
+            return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
+        });
 
     if (matchedEvent) {
         result = matchedEvent.performSearch(query);
