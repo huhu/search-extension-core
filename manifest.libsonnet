@@ -24,6 +24,7 @@ local content_script = {
     _background_scripts:: [
       'core/compat.js',
       'core/omnibox.js',
+      'core/query-event.js',
       'core/command/base.js',
       'core/command/simple.js',
       'core/command/stats.js',
