@@ -1,8 +1,14 @@
 class QueryEvent {
     constructor({
+                    onSearch, onFormat = undefined, onAppend = undefined,
                     prefix = undefined, regex = undefined,
                     defaultSearch = false, searchPriority = 0,
                 }) {
+        // The search function which should return a object array.
+        this.onSearch = onSearch;
+        // The format function which should return {content, description} object.
+        this.onFormat = onFormat;
+        this.onAppend = onAppend;
         this.prefix = prefix;
         this.regex = regex;
         this.defaultSearch = defaultSearch;
@@ -11,18 +17,6 @@ class QueryEvent {
         // The search keyword the user inputted for searching.
         this.searchedInput = "";
     }
-
-    /**
-     * The search function which should return a object array.
-     */
-    onSearch(query);
-
-    /**
-     * The format function which should return {content, description} object.
-     */
-    onFormat(index, item, query);
-
-    onAppend(query);
 
     performSearch(input) {
         this.searchedInput = input;

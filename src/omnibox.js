@@ -45,8 +45,8 @@ class Omnibox {
         return {query: query.join(" "), page};
     }
 
-    bootstrap(globalEvent, {onEmptyNavigate, beforeNavigate, afterNavigated}) {
-        this.globalEvent = globalEvent;
+    bootstrap({onSearch, onFormat, onAppend, onEmptyNavigate, beforeNavigate, afterNavigated}) {
+        this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
         this.setDefaultSuggestion(this.defaultSuggestionDescription);
         let results;
         let currentInput;
@@ -181,6 +181,20 @@ class Omnibox {
 
     addQueryEvent(event) {
         this.queryEvents.push(event);
+    }
+
+    addPrefixQueryEvent(prefix, event) {
+        this.addQueryEvent(new QueryEvent({
+            prefix,
+            ...event,
+        }));
+    }
+
+    addRegexQueryEvent(regex, event) {
+        this.addQueryEvent(new QueryEvent({
+            regex,
+            ...event,
+        }));
     }
 
     /**
