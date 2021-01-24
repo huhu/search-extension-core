@@ -143,7 +143,7 @@ class Omnibox {
         });
     }
 
-    performSearch = function (query) {
+    performSearch(query) {
         let result;
         let matchedEvent = this.queryEvents
             .sort((a, b) => {
