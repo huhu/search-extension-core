@@ -14,6 +14,7 @@ describe("Omnibox", function() {
             ["operator- --", {query: "operator-", page: 3}],
             ["operator new --", {query: "operator new", page: 3}],
             [":book rust", {query: ":book rust", page: 1}],
+            [":book  rust", {query: ":book rust", page: 1}],
             [":book rust ", {query: ":book rust", page: 1}],
             [":book rust - ", {query: ":book rust", page: 2}],
             [":book rust -xx ", {query: ":book rust", page: 2}],
@@ -24,6 +25,5 @@ describe("Omnibox", function() {
                 this.omnibox.parse(input).should.deep.equal(result);
             });
         });
-
     });
 });

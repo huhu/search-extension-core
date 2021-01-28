@@ -26,7 +26,7 @@ class Omnibox {
         let parsePage = (arg) => {
             return [...arg].filter(c => c === PAGE_TURNER).length + 1;
         };
-        let args = input.trim().split(" ");
+        let args = input.trim().split(/\s+/i);
         let query = undefined, page = 1;
         if (args.length === 1) {
             // Case: {keyword}
