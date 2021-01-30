@@ -167,10 +167,15 @@ class Omnibox {
             let defaultSearchEvents = this.queryEvents
                 .filter(event => event.defaultSearch)
                 .sort((a, b) => b.searchPriority - a.searchPriority);
+            let defaultSearchAppendixes = [];
             for (let event of defaultSearchEvents) {
                 result.push(...event.performSearch(query));
+                if (event.onAppend) {
+                    defaultSearchAppendixes.push(...event.onAppend(query));
+                }
             }
             result.push(...this.globalEvent.onAppend(query));
+            result.push(...defaultSearchAppendixes);
         }
         return result;
     }
