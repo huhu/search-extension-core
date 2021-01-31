@@ -8,7 +8,7 @@ firefox: clean
 	@jsonnet -J core manifest.jsonnet --ext-str browser=firefox -o extension/manifest.json
 
 pack:
-	web-ext build -s extension -o
+	web-ext build -s extension -n $(notdir $(shell pwd))-{version}.zip -o
 
 clean:
 	@rm -rf extension/manifest.json
