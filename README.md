@@ -32,23 +32,29 @@ let omnibox = new Omnibox(
 );
 ```
 
-**bootstrap(globalEvent, config)**
+**bootstrap(config)**
 
 Bootstrap the omnibox.
 
-- `globalEvent`: A instance of `QueryEvent`.
-- `config`:
 ```js
 {
+    // The default global search function
+    onSearch: function(query){},
+    onFormat: function(index, item){},
+    onAppend: function(query){},
     onEmptyNavigate: function(content, disposition) {},
     beforeNavigate: function(content) {},
     afterNavigated: function(query, result) {},
 }
 ```
 
-**addQueryEvent(event)**
+**addPrefixQueryEvent(prefix, event)**
 
-Add query event.
+Add prefix query event.
+
+**addRegexQueryEvent(regex, event)**
+
+Add regex query event.
 
 **addNoCacheQueries(...queries)**
 
@@ -56,11 +62,11 @@ Add query keyword to prevent cache result.
 
 ### QueryEvent
 
-**constructor(config)**
-
-- `config`:
 ```js
 {
+    onSearch,
+    onFormat = undefined,
+    onAppend = undefined,
     prefix = undefined,
     regex = undefined,
     defaultSearch = false,
