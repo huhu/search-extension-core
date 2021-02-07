@@ -28,6 +28,3 @@ deploy() {
 
   echo "Deploy complete"
 }
-
-build
-deploy
