@@ -27,6 +27,7 @@ class CommandManager {
             return result;
         } else {
             let list = this.cmds
+                .sort((a, b) => a.name.localeCompare(b.name))
                 .map(cmd => {
                     return {
                         content: `:${cmd.name}`,
