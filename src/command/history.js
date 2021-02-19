@@ -26,8 +26,12 @@ class HistoryCommand extends Command {
     static record(query, result) {
         // Ignore the command history
         if (!query || query.startsWith(":") || !result) return;
+        let {content, description} = result;
+        description = description
+            .replace(/<\/?match>/g, "")
+            .replace(/<\/?dim>/g, "");
         let history = JSON.parse(localStorage.getItem("history")) || [];
-        history.push({query, ...result, time: Date.now()});
+        history.push({query, content, description, time: Date.now()});
         localStorage.setItem("history", JSON.stringify(history));
     }
 }
