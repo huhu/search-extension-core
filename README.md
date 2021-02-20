@@ -111,9 +111,9 @@ Handle command `enter` event.
 
 ## Builtin commands
 
-- HistoryCommand
-- SimpleCommand
-- StatsCommand
+- HistoryCommand - A command to record search histories.
+- SimpleCommand - A simple command to quick setup a list item of [name, url, description] data search.
+- OpenCommand - A command simply to quick open the specific url.
 
 ## License
 
