@@ -97,9 +97,9 @@ A hook method called when press enter on command directly.
 
 ### CommandManager
 
-**constructor(commands)**
+**constructor([prefix, ]commands)**
 
-Construct the `CommandManager` with default `commands`.
+Construct the `CommandManager` with default `commands`. The prefix for commands is configurable through `prefix`, which if not provided defaults to `:`.
 
 **execute(query)**
 
