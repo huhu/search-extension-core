@@ -1,5 +1,16 @@
 class CommandManager {
-    constructor(...commands) {
+    constructor(prefixOrCommand, ...commands) {
+        // The `prefixOrCommand` argument was introduced at a later point, which would break
+        // backwards compatibility. To avoid this breakage the following code checks if the provided
+        // `prefixOrCommand` is indeed a prefix, or if it is the first command and the default
+        // prefix should be used instead.
+        if (typeof prefixOrCommand === 'string') {
+            this.prefix = prefixOrCommand;
+        } else {
+            this.prefix = ":";
+            commands.unshift(prefixOrCommand);
+        }
+
         this.cmds = [];
         commands.forEach(command => this.addCommand(command));
     }
@@ -16,7 +27,7 @@ class CommandManager {
     }
 
     execute(query) {
-        query = query.replace(":", "").trim().toLowerCase();
+        query = query.replace(this.prefix, "").trim().toLowerCase();
         let [name, arg] = query.split(" ");
         let command = this.cmds.find(cmd => cmd.name === name);
         if (command) {
@@ -30,8 +41,8 @@ class CommandManager {
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map(cmd => {
                     return {
-                        content: `:${cmd.name}`,
-                        description: `${c.match(":" + cmd.name)} - ${c.dim(cmd.description)}`
+                        content: `${this.prefix}${cmd.name}`,
+                        description: `${c.match(this.prefix + cmd.name)} - ${c.dim(cmd.description)}`
                     }
                 });
 
@@ -44,7 +55,7 @@ class CommandManager {
                 ];
             } else {
                 return [
-                    {content: "", description: `No ${c.match(":" + name)} command found, try following commands?`},
+                    {content: "", description: `No ${c.match(this.prefix + name)} command found, try following commands?`},
                     ...list
                 ];
             }
@@ -53,7 +64,7 @@ class CommandManager {
 
     handleCommandEnterEvent(content, disposition) {
         if (content) {
-            content = content.replace(":", "").trim();
+            content = content.replace(this.prefix, "").trim();
             let command = this.cmds.find(cmd => cmd.name === content);
             if (command) {
                 command.onEnter(content, disposition);
