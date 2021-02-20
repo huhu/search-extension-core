@@ -24,6 +24,8 @@ class HistoryCommand extends Command {
     }
 
     static record(query, result) {
+        if (!query || !result) return;
+
         let {content, description} = result;
         description = description
             .replace(/<\/?match>/g, "")
