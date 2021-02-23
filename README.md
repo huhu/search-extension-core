@@ -36,6 +36,7 @@ let omnibox = new Omnibox(
 
 Bootstrap the omnibox.
 
+- **config**: The configuration object to bootstrap the Omnibox.
 ```js
 {
     // The default global search function
@@ -47,6 +48,13 @@ Bootstrap the omnibox.
     afterNavigated: function(query, result) {},
 }
 ```
+
+- **config.onSearch**: A hook function to perform the default search.
+- **config.onFormat**: A hook function to format the search result.
+- **config.onAppend**: A hook function append the custom item to the result list.
+- **config.beforeNavigate**: A hook function to before URL navigate. You have the last chance to modify the url before it navigated.
+- **config.afterNavigate**: A hook function to after URL navigated. You have the chance to record the history here.
+- **config.onEmptyNavigate**: If the content is a Non-URL which would navigate failed, then fallback to this hook function.
 
 **addPrefixQueryEvent(prefix, event)**
 
@@ -80,8 +88,8 @@ An interface representing a command, you should extend this class to build a cus
 
 **constructor(name, description)**
 
-- name: The command name, for example `help`.
-- description: The command description, for example `Show the help messages`.
+- **name**: The command name, for example `help`.
+- **description**: The command description, for example `Show the help messages`.
 
 **onExecute(arg)**
 
@@ -111,9 +119,9 @@ Handle command `enter` event.
 
 ## Builtin commands
 
-- HistoryCommand - A command to record search histories.
-- SimpleCommand - A simple command to quick setup a list item of [name, url, description] data search.
-- OpenCommand - A command simply to quick open the specific url.
+- **HistoryCommand** - A command to record search histories.
+- **SimpleCommand** - A simple command to quick setup a list item of [name, url, description] data search.
+- **OpenCommand** - A command simply to quick open the specific url.
 
 ## License
 
