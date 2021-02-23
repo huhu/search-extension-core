@@ -103,26 +103,27 @@ class Omnibox {
 
             // A flag indicates whether the url navigate success
             let navigated = false;
+            // The first item (aka default suggestion) is special in Chrome extension API,
+            // here the content is the user input.
             if (content === currentInput) {
                 content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
+                result = {
+                    content,
+                    description: defaultDescription,
+                };
                 if (URL_PROTOCOLS.test(content)) {
                     Omnibox.navigateToUrl(content, disposition);
                     navigated = true;
-
-                    result = {
-                        content,
-                        description: defaultDescription,
-                    };
                 }
             } else {
                 // Store raw content before navigate to find the correct result
                 let rawContent = content;
+                result = results.find(item => item.content === rawContent);
                 content = beforeNavigate(this.cachedQuery, content);
                 if (URL_PROTOCOLS.test(content)) {
                     Omnibox.navigateToUrl(content, disposition);
                     navigated = true;
 
-                    result = results.find(item => item.content === rawContent);
                     // Ensure the result.content is the latest,
                     // since the content returned by beforeNavigate() could be different from the raw one.
                     if (result) {
