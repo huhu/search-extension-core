@@ -27,9 +27,7 @@ class HistoryCommand extends Command {
         if (!query || !result) return;
 
         let {content, description} = result;
-        description = description
-            .replace(/<\/?match>/g, "")
-            .replace(/<\/?dim>/g, "");
+        description = c.eliminateTags(description);
         let history = JSON.parse(localStorage.getItem("history")) || [];
         history.push({query, content, description, time: Date.now()});
         localStorage.setItem("history", JSON.stringify(history));
