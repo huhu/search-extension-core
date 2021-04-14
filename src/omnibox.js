@@ -132,12 +132,10 @@ class Omnibox {
                 }
             }
 
-            if (!navigated && onEmptyNavigate) {
-                onEmptyNavigate(content, disposition);
-            }
-
-            if (afterNavigated) {
+            if (navigated && afterNavigated) {
                 afterNavigated(this.cachedQuery, result);
+            } else if (onEmptyNavigate) {
+                onEmptyNavigate(content, disposition);
             }
 
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
