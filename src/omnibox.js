@@ -53,7 +53,9 @@ class Omnibox {
         let defaultDescription;
 
         chrome.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
-            this.defaultSuggestionContent = null;
+            // Set the default suggestion content to input instead null,
+            // this could prevent content null bug in onInputEntered().
+            this.defaultSuggestionContent = input;
             if (!input) {
                 this.setDefaultSuggestion(this.defaultSuggestionDescription);
                 return;
