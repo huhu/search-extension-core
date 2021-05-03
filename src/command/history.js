@@ -23,13 +23,19 @@ class HistoryCommand extends Command {
         }];
     }
 
+    /**
+     * Record the search history and reture the history item.
+     * @returns the historyItem.
+     */
     static record(query, result) {
         if (!query || !result) return;
 
-        let {content, description} = result;
+        let { content, description } = result;
         description = c.eliminateTags(description);
         let history = JSON.parse(localStorage.getItem("history")) || [];
-        history.push({query, content, description, time: Date.now()});
+        let historyItem = { query, content, description, time: Date.now() };
+        history.push(historyItem);
         localStorage.setItem("history", JSON.stringify(history));
+        return historyItem;
     }
 }
