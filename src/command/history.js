@@ -25,9 +25,12 @@ class HistoryCommand extends Command {
 
     /**
      * Record the search history and reture the history item.
+     * @param {string} query The search keyword.
+     * @param {object} result The search result.
+     * @param {number} maxSize The max size that should keep the search history in local storage.
      * @returns the historyItem.
      */
-    static record(query, result) {
+    static record(query, result, maxSize) {
         if (!query || !result) return;
 
         let { content, description } = result;
@@ -35,6 +38,11 @@ class HistoryCommand extends Command {
         let history = JSON.parse(localStorage.getItem("history")) || [];
         let historyItem = { query, content, description, time: Date.now() };
         history.push(historyItem);
+
+        if (maxSize && maxSize >= 0) {
+            // Limit the search history to the max size.
+            history.sort((a, b) => b.time - a.time).splice(maxSize);
+        }
         localStorage.setItem("history", JSON.stringify(history));
         return historyItem;
     }
