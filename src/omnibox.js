@@ -175,7 +175,10 @@ class Omnibox {
                     defaultSearchAppendixes.push(...event.onAppend(query));
                 }
             }
-            result.push(...this.globalEvent.onAppend(query));
+
+            if (this.globalEvent.onAppend) {
+                result.push(...this.globalEvent.onAppend(query));
+            }
             result.push(...defaultSearchAppendixes);
         }
         return result;
