@@ -34,17 +34,14 @@ local content_script = {
     _permissions:: [
           'tabs',
     ],
+    _browser_action:: {},
 
     manifest_version: 2,
     name: name,
     description: description,
     version: version,
     icons: it._icons,
-    browser_action: {
-      default_icon: it._icons,
-      default_popup: 'popup/index.html',
-      default_title: description,
-    },
+    browser_action: it._browser_action,
     content_security_policy: "script-src 'self'; object-src 'self';",
     omnibox: {
       keyword: keyword,
@@ -72,6 +69,13 @@ local content_script = {
     },
     addContentScript(matches, js, css, exclude_matches = []):: self + {
       content_scripts+: [content_script.new(matches, js, css, exclude_matches)],
+    },
+    addBrowserAction(popup, title):: self + {
+      _browser_action+: {
+        default_icon: it._icons,
+        default_popup: popup,
+        default_title: title,
+      },
     },
   },
 }
