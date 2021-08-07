@@ -12,7 +12,7 @@ firefox: clean
 
 # Usage: make pack [browser] to build the target package for corresponding browser.
 # Example:`make pack chrome`, `make pack firefox`, `make pack edge`.
-pack:
+pack: assert
 	@make $(call args,chrome)
 	@web-ext build -s extension -n $(call args,chrome)-$(notdir $(shell pwd))-{version}.zip -o
 
@@ -21,6 +21,16 @@ clean:
 
 test:
 	@echo $(call args,defaultstring)
+
+# The default assert target
+assert-default:
+	@echo "No asserting, ignored..."
+
+# Overrides target without warning.
+#
+# https://stackoverflow.com/a/49804748
+%: %-default
+	@ true
 
 # This allows us to accept extra arguments (by doing nothing
 # when we get a job that doesn't match, rather than throwing an error).
