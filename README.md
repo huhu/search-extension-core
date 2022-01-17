@@ -13,9 +13,13 @@ A list of search extensions based on this project:
 - [Go Search Extension](https://github.com/huhu/go-search-extension)
 - [C/C++ Search Extension](https://github.com/huhu/cpp-search-extension)
 - [Js Search Extension](https://github.com/huhu/js-search-extension)
+- [Python Search Extension](https://github.com/huhu/python-search-extension)
 - More (Java, etc)...
 
-Everyone can build your own search extension with this project.
+Everyone can build their search extension with this project. Here are some awesome search extensions from the community:
+
+- [AWS Search Extension](https://github.com/pitkley/aws-search-extension)
+- [R Search Extension](https://github.com/ShixiangWang/r-search-extension)
 
 ## API
 
