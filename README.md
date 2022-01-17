@@ -77,7 +77,10 @@ Add query keyword to prevent cache result.
     onAppend = undefined,
     prefix = undefined,
     regex = undefined,
+    // Whether enable the query as a default search.
+    // Default search means user can perform search without any sigils.
     defaultSearch = false,
+    // The default search priority. The smaller, the higher.
     searchPriority = 0
 }
 ```

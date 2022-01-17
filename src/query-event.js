@@ -1,9 +1,13 @@
 class QueryEvent {
     constructor({
-                    onSearch, onFormat = undefined, onAppend = undefined,
-                    prefix = undefined, regex = undefined,
-                    defaultSearch = false, searchPriority = 0,
-                }) {
+        onSearch,
+        onFormat = undefined,
+        onAppend = undefined,
+        prefix = undefined,
+        regex = undefined,
+        defaultSearch = false,
+        searchPriority = 0,
+    }) {
         // The search function which should return a object array.
         this.onSearch = onSearch;
         // The format function which should return {content, description} object.
@@ -11,7 +15,10 @@ class QueryEvent {
         this.onAppend = onAppend;
         this.prefix = prefix;
         this.regex = regex;
+        // Whether enable the query as a default search.
+        // Default search means user can perform search without any sigils.
         this.defaultSearch = defaultSearch;
+        // The default search priority. The smaller, the higher.
         this.searchPriority = searchPriority;
 
         // The search keyword the user inputted for searching.
