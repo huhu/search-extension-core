@@ -6,6 +6,7 @@ class QueryEvent {
         prefix = undefined,
         regex = undefined,
         defaultSearch = false,
+        isDefaultSearch = undefined,
         searchPriority = 0,
     }) {
         // The search function which should return a object array.
@@ -18,6 +19,9 @@ class QueryEvent {
         // Whether enable the query as a default search.
         // Default search means user can perform search without any sigils.
         this.defaultSearch = defaultSearch;
+        // The hook method to enable default search dynamically.
+        // This hook method is preferred over defaultSearch property.
+        this.isDefaultSearch = isDefaultSearch;
         // The default search priority. The smaller, the higher.
         this.searchPriority = searchPriority;
 

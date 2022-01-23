@@ -84,6 +84,9 @@ Add query keyword to prevent cache result.
     // Whether enable the query as a default search.
     // Default search means user can perform search without any sigils.
     defaultSearch = false,
+    // The hook method to enable default search dynamically.
+    // This hook method is preferred over defaultSearch property.
+    isDefaultSearch = undefined,
     // The default search priority. The smaller, the higher.
     searchPriority = 0
 }

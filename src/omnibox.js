@@ -167,7 +167,14 @@ class Omnibox {
         } else {
             result = this.globalEvent.performSearch(query);
             let defaultSearchEvents = this.queryEvents
-                .filter(event => event.defaultSearch)
+                .filter(event => {
+                    // The isDefaultSearch hook method is preferred over defaultSearch property.
+                    if (event.isDefaultSearch) {
+                        return event.isDefaultSearch();
+                    } else {
+                        return event.defaultSearch;
+                    }
+                })
                 // The smaller, the higher order
                 .sort((a, b) => a.searchPriority - b.searchPriority);
             let defaultSearchAppendixes = [];
