@@ -12,7 +12,7 @@ manifest.new(
 .addIcons({ '16': 'aaa.png', '32': 'bbb.png' })
 .addPermissions('activeTab')
 .addPermissions(['storage', 'unlimitedStorage'])
-.addWebAccessibleResources('test.js')
+.addWebAccessibleResources(resources = ['test.js'])
 .addContentScript(
   matches=['google.com', 'github.com'],
   js=['a.js', 'b.js'],
