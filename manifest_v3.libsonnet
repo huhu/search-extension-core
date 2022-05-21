@@ -9,11 +9,11 @@ local content_script = {
   }),
 };
 local resource = {
-    new(resources, matches, extension_ids):: std.prune({
+    new(resources, matches, extension_ids):: {
       resources: resources,
       matches: matches,
       extension_ids: extension_ids,
-    }),
+    },
 };
 
 {
