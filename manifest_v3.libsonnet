@@ -8,6 +8,13 @@ local content_script = {
     exclude_matches: exclude_matches,
   }),
 };
+local resource = {
+    new(resources, matches, extension_ids):: std.prune({
+      resources: resources,
+      matches: matches,
+      extension_ids: extension_ids,
+    }),
+};
 
 {
   /**
@@ -26,7 +33,6 @@ local content_script = {
           'tabs',
     ],
     _action:: {},
-    _resources:: [],
 
     manifest_version: 3,
     name: name,
@@ -44,9 +50,7 @@ local content_script = {
     background: {
       service_worker: service_worker,
     },
-    web_accessible_resources: {
-        resources: it._resources,
-    },
+    web_accessible_resources: [],
     permissions: it._permissions,
     addIcons(icons):: self + {
       _icons+: icons,
@@ -54,8 +58,8 @@ local content_script = {
     addPermissions(permission):: self + {
       _permissions+: if std.isArray(permission) then permission else [permission],
     },
-    addWebAccessibleResources(resource):: self + {
-      _resources+: if std.isArray(resource) then resource else [resource],
+    addWebAccessibleResources(resources, matches = [], extension_ids = []):: self + {
+      web_accessible_resources+: [resource.new(resources, matches, extension_ids)],
     },
     addContentScript(matches, js, css, exclude_matches = []):: self + {
       content_scripts+: [content_script.new(matches, js, css, exclude_matches)],
