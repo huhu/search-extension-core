@@ -23,6 +23,14 @@ Everyone can build their search extension with this project. Here are some aweso
 
 ## API
 
+> **Warning**
+> 
+> The Manifest V2 will be sunset near soon, we should [migrate to Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-migration).
+>
+>The `manifest_v3.jsonnet` is the latest manifest file for V3.
+>
+> Another big concern is that V3 doesn't support `localStorage`, the alternative is `chrome.storage.local` or `chrome.storage.sync`.
+
 ### Omnibox
 
 **constructor(defaultSuggestion, maxSuggestionSize)**
