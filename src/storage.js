@@ -29,6 +29,12 @@ const storage = {
 async function migrateLocalStorage(key) {
     let value = localStorage.getItem(key);
     if (value) {
-        await storage.setItem(key, JSON.parse(value));
+        try {
+            // Some plain text isn't JSON parsable.
+            value = JSON.parse(value);
+        } catch (e) {
+            console.error(e);
+        }
+        await storage.setItem(key, value);
     }
 }
