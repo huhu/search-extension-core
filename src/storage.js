@@ -1,7 +1,14 @@
 // Mimic localStorage API with chrome.storage
 const storage = {
     getAllItems: () => storageGet(null),
-    getItem: async key => (await storageGet(key))[key],
+    getItem: async key => {
+        let value = await storageGet(key);
+        if (value && key in value) {
+            return value[key];
+        } else {
+            return null;
+        }
+    },
     setItem: (key, val) => new Promise(resolve => {
         chrome.storage.local.set({
             [key]: val
