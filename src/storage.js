@@ -33,7 +33,7 @@ async function migrateLocalStorage(key) {
             // Some plain text isn't JSON parsable.
             value = JSON.parse(value);
         } catch (e) {
-            console.error(e);
+            console.log(`can't parse ${value} as JSON: ${e}`);
         }
         await storage.setItem(key, value);
     }
