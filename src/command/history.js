@@ -12,7 +12,7 @@ class HistoryCommand extends Command {
                 return {
                     content: item.content,
                     description: `${item.query} - ${item.description}`
-                }
+                };
             });
     }
 
@@ -43,7 +43,7 @@ class HistoryCommand extends Command {
             // Limit the search history to the max size.
             history.sort((a, b) => b.time - a.time).splice(maxSize);
         }
-        await storage.setItem("history", JSON.stringify(history));
+        await storage.setItem("history", history);
         return historyItem;
     }
 }
