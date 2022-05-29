@@ -2,9 +2,7 @@
 // See also: https://developer.chrome.com/docs/extensions/reference/storage/
 const storage = {
     getAllItems: () => new Promise(resolve => {
-        chrome.storage.local.get(null, (result) => {
-            resolve(result);
-        });
+        chrome.storage.local.get(null, resolve);
     }),
     // Gets one or more items from storage.
     getItem: key => new Promise(resolve => {
@@ -24,8 +22,7 @@ const storage = {
     }),
     // Removes one or more items from storage.
     removeItem: key => new Promise(resolve => {
-        chrome.storage.local.remove(key);
-        resolve()
+        chrome.storage.local.remove(key, resolve);
     }),
 };
 

@@ -25,6 +25,7 @@ local content_script = {
       'core/compat.js',
       'core/omnibox.js',
       'core/query-event.js',
+      'core/storage.js',
       'core/command/base.js',
       'core/command/simple.js',
       'core/command/open.js',
