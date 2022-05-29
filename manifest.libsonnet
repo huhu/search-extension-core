@@ -31,9 +31,6 @@ local content_script = {
       'core/command/history.js',
       'core/command/manager.js',
     ],
-    _permissions:: [
-          'tabs',
-    ],
     _browser_action:: {},
 
     manifest_version: 2,
@@ -51,12 +48,12 @@ local content_script = {
       scripts: it._background_scripts,
     },
     web_accessible_resources: [],
-    permissions: it._permissions,
+    permissions: [],
     addIcons(icons):: self + {
       _icons+: icons,
     },
     addPermissions(permission):: self + {
-      _permissions+: if std.isArray(permission) then permission else [permission],
+      permissions+: if std.isArray(permission) then permission else [permission],
     },
     appendContentSecurityPolicy(policy):: self + {
       content_security_policy+: policy,
