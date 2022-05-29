@@ -1,10 +1,12 @@
-// Mimic localStorage API with chrome.storage
+// Mimic localStorage API with chrome.storage.
+// See also: https://developer.chrome.com/docs/extensions/reference/storage/
 const storage = {
     getAllItems: () => new Promise(resolve => {
         chrome.storage.local.get(null, (result) => {
             resolve(result);
         });
     }),
+    // Gets one or more items from storage.
     getItem: key => new Promise(resolve => {
         chrome.storage.local.get(key, (result) => {
             if (result) {
@@ -14,13 +16,15 @@ const storage = {
             }
         });
     }),
+    // Set signle key-value pair item.
     setItem: (key, val) => new Promise(resolve => {
         chrome.storage.local.set({
             [key]: val
         }, resolve)
     }),
-    removeItems: keys => new Promise(resolve => {
-        chrome.storage.local.remove(keys);
+    // Removes one or more items from storage.
+    removeItem: key => new Promise(resolve => {
+        chrome.storage.local.remove(key);
         resolve()
     }),
 };
