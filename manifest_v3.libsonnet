@@ -29,9 +29,6 @@ local resource = {
   ):: {
     local it = self,
     _icons:: {},
-    _permissions:: [
-          'tabs',
-    ],
     _action:: {},
 
     manifest_version: 3,
@@ -51,12 +48,12 @@ local resource = {
       service_worker: service_worker,
     },
     web_accessible_resources: [],
-    permissions: it._permissions,
+    permissions: [],
     addIcons(icons):: self + {
       _icons+: icons,
     },
     addPermissions(permission):: self + {
-      _permissions+: if std.isArray(permission) then permission else [permission],
+      permissions+: if std.isArray(permission) then permission else [permission],
     },
     addWebAccessibleResources(resources, matches = [], extension_ids = []):: self + {
       web_accessible_resources+: [resource.new(resources, matches, extension_ids)],
