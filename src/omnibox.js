@@ -53,7 +53,7 @@ class Omnibox {
         let currentInput;
         let defaultDescription;
 
-        chrome.omnibox.onInputChanged.addListener(async(input, suggestFn) => {
+        chrome.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
             // Set the default suggestion content to input instead null,
             // this could prevent content null bug in onInputEntered().
             this.defaultSuggestionContent = input;
@@ -66,7 +66,7 @@ class Omnibox {
             let { query, page } = this.parse(input);
             // Always perform search if query is a noCachedQuery, then check whether equals to cachedQuery
             if (this.noCacheQueries.has(query) || this.cachedQuery !== query) {
-                results = this.performSearch(query);
+                results = await this.performSearch(query);
                 this.cachedQuery = query;
                 this.cachedResult = results;
             } else {
@@ -99,17 +99,17 @@ class Omnibox {
             suggestFn(results);
         });
 
-        chrome.omnibox.onInputEntered.addListener((content, disposition) => {
+        chrome.omnibox.onInputEntered.addListener(async (content, disposition) => {
             let result;
             // Give beforeNavigate a default function
-            beforeNavigate = beforeNavigate || ((_, s) => s);
+            beforeNavigate = beforeNavigate || (async (_, s) => s);
 
             // A flag indicates whether the url navigate success
             let navigated = false;
             // The first item (aka default suggestion) is special in Chrome extension API,
             // here the content is the user input.
             if (content === currentInput) {
-                content = beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
+                content = await beforeNavigate(this.cachedQuery, this.defaultSuggestionContent);
                 result = {
                     content,
                     description: defaultDescription,
@@ -122,7 +122,7 @@ class Omnibox {
                 // Store raw content before navigate to find the correct result
                 let rawContent = content;
                 result = results.find(item => item.content === rawContent);
-                content = beforeNavigate(this.cachedQuery, content);
+                content = await beforeNavigate(this.cachedQuery, content);
                 if (URL_PROTOCOLS.test(content)) {
                     Omnibox.navigateToUrl(content, disposition);
                     navigated = true;
@@ -136,16 +136,16 @@ class Omnibox {
             }
 
             if (navigated && afterNavigated) {
-                afterNavigated(this.cachedQuery, result);
+                await afterNavigated(this.cachedQuery, result);
             } else if (onEmptyNavigate) {
-                onEmptyNavigate(content, disposition);
+                await onEmptyNavigate(content, disposition);
             }
 
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
         });
     }
 
-    performSearch(query) {
+    async performSearch(query) {
         let result;
         let matchedEvent = this.queryEvents
             .sort((a, b) => {
@@ -160,12 +160,12 @@ class Omnibox {
             });
 
         if (matchedEvent) {
-            result = matchedEvent.performSearch(query);
+            result = await matchedEvent.performSearch(query);
             if (matchedEvent.onAppend) {
                 result.push(...matchedEvent.onAppend(query));
             }
         } else {
-            result = this.globalEvent.performSearch(query);
+            result = await this.globalEvent.performSearch(query);
             let defaultSearchEvents = this.queryEvents
                 .filter(event => {
                     // The isDefaultSearch hook method is preferred over defaultSearch property.
@@ -179,7 +179,7 @@ class Omnibox {
                 .sort((a, b) => a.searchPriority - b.searchPriority);
             let defaultSearchAppendixes = [];
             for (let event of defaultSearchEvents) {
-                result.push(...event.performSearch(query));
+                result.push(...await event.performSearch(query));
                 if (event.onAppend) {
                     defaultSearchAppendixes.push(...event.onAppend(query));
                 }

@@ -4,7 +4,7 @@ class Command {
         this.description = description;
     }
 
-    onExecute(arg) {
+    async onExecute(arg) {
     }
 
     // A hook method called when press enter on command directly.

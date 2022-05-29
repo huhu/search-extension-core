@@ -3,8 +3,8 @@ class HistoryCommand extends Command {
         super("history", "Show your local search history.", false);
     }
 
-    onExecute(arg) {
-        let history = JSON.parse(localStorage.getItem("history")) || [];
+    async onExecute(arg) {
+        let history = await storage.getItem("history") || [];
         return history
             .filter(item => !arg || item.query.toLowerCase().indexOf(arg) > -1)
             .sort((a, b) => b.time - a.time)
@@ -12,7 +12,7 @@ class HistoryCommand extends Command {
                 return {
                     content: item.content,
                     description: `${item.query} - ${item.description}`
-                }
+                };
             });
     }
 
@@ -30,12 +30,12 @@ class HistoryCommand extends Command {
      * @param {number} maxSize The max size that should keep the search history in local storage.
      * @returns the historyItem.
      */
-    static record(query, result, maxSize) {
+    static async record(query, result, maxSize) {
         if (!query || !result) return;
 
         let { content, description } = result;
         description = c.eliminateTags(description);
-        let history = JSON.parse(localStorage.getItem("history")) || [];
+        let history = await storage.getItem("history") || [];
         let historyItem = { query, content, description, time: Date.now() };
         history.push(historyItem);
 
@@ -43,7 +43,7 @@ class HistoryCommand extends Command {
             // Limit the search history to the max size.
             history.sort((a, b) => b.time - a.time).splice(maxSize);
         }
-        localStorage.setItem("history", JSON.stringify(history));
+        await storage.setItem("history", history);
         return historyItem;
     }
 }

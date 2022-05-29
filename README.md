@@ -68,6 +68,8 @@ Bootstrap the omnibox.
 - **config.afterNavigate**: A hook function to after URL navigated. You have the chance to record the history here.
 - **config.onEmptyNavigate**: If the content is a Non-URL which would navigate failed, then fallback to this hook function.
 
+The `onSearch`, `beforeNavigate`, `afterNavigated`, and `onEmptyNavigate` in `Omnibox::boostrap(config)` can be `async` function.
+
 **addPrefixQueryEvent(prefix, event)**
 
 Add prefix query event.
@@ -99,6 +101,8 @@ Add query keyword to prevent cache result.
     searchPriority = 0
 }
 ```
+
+The `onSearch` can be `async` function.
 
 ### Command
 
