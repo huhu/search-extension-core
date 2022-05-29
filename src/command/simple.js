@@ -7,7 +7,7 @@ class SimpleCommand extends Command {
         this.setIndex(index);
     }
 
-    onExecute(arg) {
+    async onExecute(arg) {
         return this.index
             .filter(item => !arg || item[0].toLowerCase().indexOf(arg) > -1)
             .map(([name, url, description]) => {

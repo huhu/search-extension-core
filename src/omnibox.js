@@ -145,7 +145,7 @@ class Omnibox {
         });
     }
 
-    performSearch(query) {
+    async performSearch(query) {
         let result;
         let matchedEvent = this.queryEvents
             .sort((a, b) => {
