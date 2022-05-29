@@ -26,12 +26,12 @@ class CommandManager {
         }
     }
 
-    execute(query) {
+    async execute(query) {
         query = query.replace(this.prefix, "").trim().toLowerCase();
         let [name, arg] = query.split(" ");
         let command = this.cmds.find(cmd => cmd.name === name);
         if (command) {
-            let result = command.onExecute(arg);
+            let result = await command.onExecute(arg);
             if (!result || result.length < 1) {
                 result = command.onBlankResult(arg);
             }
@@ -50,12 +50,12 @@ class CommandManager {
             if (result.length > 0) {
                 // Filter commands with prefix
                 return [
-                    {content: "", description: `Found following commands, press Tab to select.`},
+                    { content: "", description: `Found following commands, press Tab to select.` },
                     ...result
                 ];
             } else {
                 return [
-                    {content: "", description: `No ${c.match(this.prefix + name)} command found, try following commands?`},
+                    { content: "", description: `No ${c.match(this.prefix + name)} command found, try following commands?` },
                     ...list
                 ];
             }

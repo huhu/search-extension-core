@@ -29,9 +29,9 @@ class QueryEvent {
         this.searchedInput = "";
     }
 
-    performSearch(input) {
+    async performSearch(input) {
         this.searchedInput = input;
-        let result = this.onSearch(input);
+        let result = await this.onSearch(input);
         return result.map(item => {
             // FIXME: item could be a non-object type, maybe we need Typescript to fix this...
             item['event'] = this;
