@@ -1,10 +1,10 @@
 local content_script = {
   // Using std.prune() function to remove all "empty" members
-  new(matches, js, css, exclude_matches):: std.prune({
+  new(matches, js, css, exclude_matches, run_at):: std.prune({
     matches: matches,
     js: js,
     css: css,
-    run_at: 'document_start',
+    run_at: run_at,
     exclude_matches: exclude_matches,
   }),
 };
@@ -58,8 +58,8 @@ local resource = {
     addWebAccessibleResources(resources, matches = [], extension_ids = []):: self + {
       web_accessible_resources+: [resource.new(resources, matches, extension_ids)],
     },
-    addContentScript(matches, js, css, exclude_matches = []):: self + {
-      content_scripts+: [content_script.new(matches, js, css, exclude_matches)],
+    addContentScript(matches, js, css, exclude_matches = [], run_at = 'document_start'):: self + {
+      content_scripts+: [content_script.new(matches, js, css, exclude_matches, run_at)],
     },
     addAction(popup, title):: self + {
       _action+: {

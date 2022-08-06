@@ -1,10 +1,10 @@
 local content_script = {
   // Using std.prune() function to remove all "empty" members
-  new(matches, js, css, exclude_matches):: std.prune({
+  new(matches, js, css, exclude_matches, run_at):: std.prune({
     matches: matches,
     js: js,
     css: css,
-    run_at: 'document_start',
+    run_at: run_at,
     exclude_matches: exclude_matches,
   }),
 };
@@ -65,8 +65,8 @@ local content_script = {
     addBackgroundScripts(script):: self + {
       _background_scripts+: if std.isArray(script) then script else [script],
     },
-    addContentScript(matches, js, css, exclude_matches = []):: self + {
-      content_scripts+: [content_script.new(matches, js, css, exclude_matches)],
+    addContentScript(matches, js, css, exclude_matches = [], run_at = 'document_start'):: self + {
+      content_scripts+: [content_script.new(matches, js, css, exclude_matches, run_at)],
     },
     addBrowserAction(popup, title):: self + {
       _browser_action+: {

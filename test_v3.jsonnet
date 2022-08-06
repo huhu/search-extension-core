@@ -1,4 +1,4 @@
-// Run: jsonnet test.jsonnet
+// Run: jsonnet test_v3.jsonnet
 
 local manifest = import 'manifest_v3.libsonnet';
 
@@ -17,5 +17,6 @@ manifest.new(
   matches=['google.com', 'github.com'],
   js=['a.js', 'b.js'],
   css=['a.css', 'b.css'],
+  run_at='document_end',
 )
 .addAction("popup.html", "Search Extension Description")
