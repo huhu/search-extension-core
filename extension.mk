@@ -1,9 +1,9 @@
 # https://stackoverflow.com/a/47008498/2220110
 args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
-# Copy src directory to extension/core directory.
-extension/core: src
-	cp $< $@
+# Copy core/src directory to extension/core directory.
+extension/core: core/src
+	@cp -r $< $@
 
 chrome: clean
 	@jsonnet -J core manifest.jsonnet --ext-str browser=chrome -o extension/manifest.json
