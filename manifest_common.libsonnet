@@ -36,7 +36,7 @@ local content_script = {
     addIcons(icons):: self + {
       _icons+: icons,
     },
-    setOptionUi(page, open_in_tab=true):: self + {
+    setOptionsUi(page, open_in_tab=true):: self + {
       [if std.length(page) > 0 then 'options_ui' else null]: {
         page: page,
         open_in_tab: open_in_tab,

@@ -9,7 +9,7 @@ manifest.new(
   description='search...',
   service_worker="service_worker.js",
 )
-.setOptionUi("options/index.html")
+.setOptionsUi("options/index.html")
 .addIcons({ '16': 'aaa.png', '32': 'bbb.png' })
 .addPermissions('activeTab')
 .addPermissions(['storage', 'unlimitedStorage'])
