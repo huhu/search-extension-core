@@ -36,8 +36,11 @@ local content_script = {
     addIcons(icons):: self + {
       _icons+: icons,
     },
-    setOptionsPage(page):: self + {
-      [if std.length(page) > 0 then 'options_page' else null]: page,
+    setOptionUi(page, open_in_tab=true):: self + {
+      [if std.length(page) > 0 then 'options_ui' else null]: {
+        page: page,
+        open_in_tab: open_in_tab,
+      },
     },
     addPermissions(permission):: self + {
       permissions+: if std.isArray(permission) then permission else [permission],
