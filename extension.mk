@@ -1,6 +1,10 @@
 # https://stackoverflow.com/a/47008498/2220110
 args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
+# Copy src directory to extension/core directory.
+extension/core: src
+	cp $< $@
+
 chrome: clean
 	@jsonnet -J core manifest.jsonnet --ext-str browser=chrome -o extension/manifest.json
 
@@ -16,11 +20,8 @@ pack: assert
 	@make $(call args,chrome)
 	@web-ext build -s extension -n $(call args,chrome)-$(notdir $(shell pwd))-{version}.zip -o
 
-clean:
+clean: extension/core
 	@rm -rf extension/manifest.json
-
-test:
-	@echo $(call args,defaultstring)
 
 # The default assert target
 assert-default:
