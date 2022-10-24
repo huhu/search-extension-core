@@ -1,8 +1,10 @@
 # https://stackoverflow.com/a/47008498/2220110
 args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
 
+.PHONY: extension/core
 # Copy core/src directory to extension/core directory.
 extension/core: core/src
+	@rm -rf extension/core
 	@cp -r $< $@
 
 chrome: clean
