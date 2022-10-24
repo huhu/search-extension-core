@@ -74,10 +74,12 @@ class Omnibox {
             }
 
             let totalPage = Math.ceil(results.length / this.maxSuggestionSize);
+            const paginationTip = ` | Page [${page}/${totalPage}], append '${PAGE_TURNER}' to page down`;
             let uniqueUrls = new Set();
             // Slice the page data then format this data.
+            results = results.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
+            let pageTotal = results.length;
             results = results
-                .slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page)
                 .map(({ event, ...item }, index) => {
                     if (event) {
                         // onAppend result has event.
@@ -86,6 +88,10 @@ class Omnibox {
                     if (uniqueUrls.has(item.content)) {
                         item.content += `?${uniqueUrls.size + 1}`;
                     }
+                    if (index === pageTotal - 1) {
+                        // Add pagination tip in the last item.
+                        item.description += paginationTip;
+                    }
                     uniqueUrls.add(item.content);
                     return item;
                 });
@@ -93,7 +99,7 @@ class Omnibox {
                 let { content, description } = results.shift();
                 // Store the default description temporary.
                 defaultDescription = description;
-                description += ` | Page [${page}/${totalPage}], append '${PAGE_TURNER}' to page down`;
+                description += paginationTip;
                 this.setDefaultSuggestion(description, content);
             }
             suggestFn(results);
