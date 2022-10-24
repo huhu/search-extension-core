@@ -78,7 +78,7 @@ class Omnibox {
             let uniqueUrls = new Set();
             // Slice the page data then format this data.
             results = results.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
-            let pageTotal = results.length;
+            let pageSize = results.length;
             results = results
                 .map(({ event, ...item }, index) => {
                     if (event) {
@@ -88,7 +88,7 @@ class Omnibox {
                     if (uniqueUrls.has(item.content)) {
                         item.content += `?${uniqueUrls.size + 1}`;
                     }
-                    if (index === pageTotal - 1) {
+                    if (totalPage > 1 && pageSize > 2 && index === pageSize - 1) {
                         // Add pagination tip in the last item.
                         item.description += paginationTip;
                     }
