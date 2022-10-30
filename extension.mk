@@ -22,6 +22,11 @@ pack: assert
 	@make $(call args,chrome)
 	@web-ext build -s extension -n $(call args,chrome)-$(notdir $(shell pwd))-{version}.zip -o
 
+pack-all:
+	@pack chrome
+	@pack firefox
+	@pack edge
+
 clean: extension/core
 	@rm -rf extension/manifest.json
 
