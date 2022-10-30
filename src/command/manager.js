@@ -28,9 +28,11 @@ class CommandManager {
 
     async execute(query) {
         query = query.replace(this.prefix, "").trim().toLowerCase();
-        let [name, arg] = query.split(" ");
+        let [name, ...keywords] = query.split(" ");
         let command = this.cmds.find(cmd => cmd.name === name);
         if (command) {
+            // Join all rest keywords as the argument.
+            let arg = keywords.join(" ");
             let result = await command.onExecute(arg);
             if (!result || result.length < 1) {
                 result = command.onBlankResult(arg);

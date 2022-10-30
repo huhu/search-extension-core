@@ -22,5 +22,5 @@ class Command {
         return result.map((description, index) => {
             return {content: `${index + 1}`, description};
         });
-    };
+    }
 }
