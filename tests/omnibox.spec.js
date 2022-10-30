@@ -17,8 +17,10 @@ describe("Omnibox", function() {
             [":book  rust", {query: ":book rust", page: 1}],
             [":book rust ", {query: ":book rust", page: 1}],
             [":book rust - ", {query: ":book rust", page: 2}],
+            [":book rust lang - ", {query: ":book rust lang", page: 2}],
             [":book rust -xx ", {query: ":book rust", page: 2}],
             [":book rust -xx- ", {query: ":book rust", page: 3}],
+            [":book rust lang -xx- ", {query: ":book rust lang", page: 3}],
         ];
         inputs.forEach(([input, result]) => {
             it(`Omnibox parse "${input}"`, function() {

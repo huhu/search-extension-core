@@ -37,11 +37,19 @@ class Omnibox {
             query = [args[0]];
             page = parsePage(args[1]);
         } else if (args.length >= 2) {
-            // Case: {keyword} {keyword} {page-turner}
-            query = [args[0], args[1]];
-            if (args[2] && args[2].startsWith(PAGE_TURNER)) {
-                page = parsePage(args[2]);
+            // Case: {keyword} ... {keyword} {page-turner}
+            let lastArg = args[args.length - 1];
+
+            if (lastArg && lastArg.startsWith(PAGE_TURNER)) {
+                page = parsePage(lastArg);
+                if (page > 1) {
+                    // If page > 1, means the last arg is a page tuner,
+                    // we should pop up the last arg.
+                    args.pop();
+                }
             }
+            // The rest keywords is the query.
+            query = args;
         }
         return { query: query.join(" "), page };
     }
