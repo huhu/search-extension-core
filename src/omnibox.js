@@ -24,24 +24,28 @@ class Omnibox {
 
     parse(input) {
         let parsePage = (arg) => {
-            return [...arg].filter(c => c === PAGE_TURNER).length + 1;
+            return [...arg].filter(c => c === PAGE_TURNER).length;
         };
         let args = input.trim().split(/\s+/i);
         let query = undefined,
             page = 1;
-        if (args.length === 1) {
+        if (args.length === 1 && args[0].startsWith(PAGE_TURNER)) {
+            // Case: {page-turner}
+            query = [];
+            page = parsePage(args[0]);
+        } else if (args.length === 1) {
             // Case: {keyword}
             query = [args[0]];
         } else if (args.length === 2 && args[1].startsWith(PAGE_TURNER)) {
             // Case: {keyword} {page-turner}
             query = [args[0]];
-            page = parsePage(args[1]);
+            page = parsePage(args[1]) + 1;
         } else if (args.length >= 2) {
             // Case: {keyword} ... {keyword} {page-turner}
             let lastArg = args[args.length - 1];
 
             if (lastArg && lastArg.startsWith(PAGE_TURNER)) {
-                page = parsePage(lastArg);
+                page = parsePage(lastArg) + 1;
                 if (page > 1) {
                     // If page > 1, means the last arg is a page tuner,
                     // we should pop up the last arg.
