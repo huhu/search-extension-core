@@ -33,6 +33,9 @@ local resource = {
     addWebAccessibleResources(resources, matches=[], extension_ids=[]):: self + {
       web_accessible_resources+: [resource.new(resources, matches, extension_ids)],
     },
+    addHostPermissions(permission):: self + {
+      host_permissions+: if std.isArray(permission) then permission else [permission],
+    },
     addAction(popup, title):: self + {
       _action+: {
         default_icon: it._icons,

@@ -13,6 +13,8 @@ manifest.new(
 .addIcons({ '16': 'aaa.png', '32': 'bbb.png' })
 .addPermissions('activeTab')
 .addPermissions(['storage', 'unlimitedStorage'])
+.addHostPermissions('https://github.com/huhu/search-extension-core/*')
+.addHostPermissions(['https://docs.rs/*', 'https://crates.io/*'])
 .addWebAccessibleResources(resources = ['test.js'])
 .addContentScript(
   matches=['google.com', 'github.com'],
