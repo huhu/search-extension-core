@@ -44,7 +44,7 @@ class Omnibox {
             // Case: {keyword} ... {keyword} {page-turner}
             let lastArg = args[args.length - 1];
 
-            if (lastArg && lastArg.startsWith(PAGE_TURNER)) {
+            if (lastArg?.startsWith(PAGE_TURNER)) {
                 page = parsePage(lastArg) + 1;
                 if (page > 1) {
                     // If page > 1, means the last arg is a page tuner,
@@ -174,7 +174,7 @@ class Omnibox {
                 }
                 return 0;
             }).find(event => {
-                return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
+                return (event.prefix && query.startsWith(event.prefix)) || (event.regex?.test(query));
             });
 
         if (matchedEvent) {
