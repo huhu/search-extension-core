@@ -61,7 +61,7 @@ class Omnibox {
     bootstrap({ onSearch, onFormat, onAppend, onEmptyNavigate, beforeNavigate, afterNavigated }) {
         this.globalEvent = new QueryEvent({ onSearch, onFormat, onAppend });
         this.setDefaultSuggestion(this.defaultSuggestionDescription);
-        let results;
+        let results = [];
         let currentInput;
         let defaultDescription;
 
