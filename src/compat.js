@@ -10,7 +10,7 @@ class Compat {
 
     browserType() {
         let userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("firefox") !== -1)
+        if (userAgent.indexOf("gecko") !== -1)
             return "firefox";
         if (userAgent.indexOf("edg") !== -1)
             return "edge";
