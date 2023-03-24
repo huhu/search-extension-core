@@ -10,12 +10,16 @@ class Compat {
 
     browserType() {
         let userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("gecko") !== -1)
-            return "firefox";
+        // The order is matter. Do not change it! 
+        // You should know what you are doing.
         if (userAgent.indexOf("edg") !== -1)
             return "edge";
         if (userAgent.indexOf("chrome") !== -1)
             return "chrome";
+        if (userAgent.indexOf("safari") !== -1)
+            return "safari";
+        if (userAgent.indexOf("gecko") !== -1)
+            return "firefox";
         return "unknown";
     }
 
