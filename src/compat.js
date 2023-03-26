@@ -27,16 +27,28 @@ class Compat {
         return { "firefox": 6, "edge": 7, "chrome": 8, "unknown": 6 }[this.browserType()];
     }
 
-    // Escape the five predefined entities to display them as text.
+    // Escape the special characters to display them as text.
     escape(str) {
         str = str || "";
-        return this.browserType() !== "firefox" ? str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;")
-            : str;
+        if (this.browserType() === "firefox") {
+            // Firefox support <,> in omnibox and doesn't support escaped characters.
+            // So we can unescape them.
+            return str
+                .replace(/&amp;/g, "&")
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">")
+                .replace(/&quot;/g, '"')
+                .replace(/&#039;/g, "'");
+        } else {
+            // Chromium based browsers not support <,> in omnibox.
+            // We should escape them to avoid xml parse error.
+            return str
+                // .replace(/&/g, "&amp;") Do not escape "&" to "&amp;".
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     }
 
     normalizeDate(date) {
