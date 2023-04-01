@@ -42,13 +42,18 @@ class Compat {
         } else {
             // Chromium based browsers not support <,> in omnibox.
             // We should escape them to avoid xml parse error.
-            return str
-                // .replace(/&/g, "&amp;") Do not escape "&" to "&amp;".
+            return this.escapeAmpersand(str)
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
+    }
+
+    // Escape ampesand & to &amp;, however do not escape &amp; to &amp;amp;.
+    escapeAmpersand(str) {
+        // &(?!(amp;)) match "&" which is not followed by "amp;"
+        return str.replace(/&(?!(amp;))/g, "&amp;");
     }
 
     normalizeDate(date) {
