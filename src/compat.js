@@ -50,10 +50,10 @@ class Compat {
         }
     }
 
-    // Escape ampesand & to &amp;, however do not escape &amp; to &amp;amp;.
+    // Escape ampersand & (with spaces around) to &amp;.
+    // For example, "a & b" => "a &amp; b"
     escapeAmpersand(str) {
-        // &(?!(amp;)) match "&" which is not followed by "amp;"
-        return str.replace(/&(?!(amp;))/g, "&amp;");
+        return str.replace(" & ", " &amp; ");
     }
 
     normalizeDate(date) {
