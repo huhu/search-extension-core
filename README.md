@@ -12,6 +12,7 @@ A list of search extensions based on this project:
 - [Rust Search Extension](https://github.com/huhu/rust-search-extension)
 - [Go Search Extension](https://github.com/huhu/go-search-extension)
 - [C/C++ Search Extension](https://github.com/huhu/cpp-search-extension)
+- [Kubernetes Search Extension](https://github.com/huhu/k8s-search-extension)
 - [Js Search Extension](https://github.com/huhu/js-search-extension)
 - [Python Search Extension](https://github.com/huhu/python-search-extension)
 - More (Java, etc)...
