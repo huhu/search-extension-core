@@ -15,6 +15,7 @@ manifest.new(
 .addPermissions(['storage', 'unlimitedStorage'])
 .addHostPermissions('https://github.com/huhu/search-extension-core/*')
 .addHostPermissions(['https://docs.rs/*', 'https://crates.io/*'])
+.addOptionalHostPermissions(['file:///*'])
 .addWebAccessibleResources(resources = ['test.js'])
 .addContentScript(
   matches=['google.com', 'github.com'],
