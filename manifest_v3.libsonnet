@@ -36,6 +36,9 @@ local resource = {
     addHostPermissions(permission):: self + {
       host_permissions+: if std.isArray(permission) then permission else [permission],
     },
+    addOptionalHostPermissions(permission):: self + {
+      optional_host_permissions+: if std.isArray(permission) then permission else [permission],
+    },
     addAction(popup, title):: self + {
       _action+: {
         default_icon: it._icons,
