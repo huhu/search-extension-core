@@ -1,4 +1,6 @@
-import { c } from "../index";
+import { c } from "../index.js";
+import Command from "./base.js";
+import storage from "../storage.js";
 
 export default class HistoryCommand extends Command {
     constructor() {

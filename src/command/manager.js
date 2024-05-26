@@ -1,4 +1,4 @@
-import { c } from "../index";
+import { c } from "../index.js";
 
 export default class CommandManager {
     constructor(prefixOrCommand, ...commands) {

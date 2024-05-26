@@ -1,4 +1,5 @@
-import { c } from "../index";
+import { c } from "../index.js";
+import Command from "./base.js";
 
 /**
  * A simple command to quick setup a list item of [name, url, description] data search.

@@ -1,3 +1,5 @@
+import Command from "./base.js";
+
 /**
  * A command simply to quick open the specific url.
  */
