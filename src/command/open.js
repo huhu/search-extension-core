@@ -1,4 +1,5 @@
 import Command from "./base.js";
+import Omnibox from "../omnibox.js";
 
 /**
  * A command simply to quick open the specific url.

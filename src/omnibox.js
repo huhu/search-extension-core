@@ -127,8 +127,7 @@ export default class Omnibox {
                     if (index == 0) {
                         // Add pagination tip in the first item.
                         item.description += paginationTip;
-                    }
-                    if (totalPage > 1 && pageSize > 2 && index === pageSize - 1) {
+                    } else if (totalPage > 1 && pageSize > 2 && index === pageSize - 1) {
                         // Add pagination tip in the last item.
                         item.description += paginationTip;
                     }
