@@ -1,4 +1,4 @@
-class Command {
+export default class Command {
     constructor(name, description) {
         this.name = name;
         this.description = description;
@@ -20,7 +20,7 @@ class Command {
     // as the content is required by omnibox api.
     wrap(result) {
         return result.map((description, index) => {
-            return {content: `${index + 1}`, description};
+            return { content: `${index + 1}`, description };
         });
     }
-}
+};

@@ -1,4 +1,4 @@
-class QueryEvent {
+export default class QueryEvent {
     constructor({
         onSearch,
         onFormat = undefined,
@@ -46,4 +46,4 @@ class QueryEvent {
         }
         return item;
     }
-}
+};

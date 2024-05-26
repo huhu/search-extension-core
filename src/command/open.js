@@ -1,7 +1,7 @@
 /**
  * A command simply to quick open the specific url.
  */
-class OpenCommand extends Command {
+export default class OpenCommand extends Command {
     /**
      *
      * @param name The command name. (without command prefix)
@@ -25,4 +25,4 @@ class OpenCommand extends Command {
             description: this.blankResult.description,
         }];
     }
-}
+};

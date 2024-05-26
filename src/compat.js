@@ -1,4 +1,4 @@
-class Compat {
+export default class Compat {
     constructor() {
         // Firefox doesn't support tags in search suggestion.
         this.tagged = this.browserType() !== "firefox" ?
@@ -74,4 +74,4 @@ class Compat {
         }
         return "";
     }
-}
+};

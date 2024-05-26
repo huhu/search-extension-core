@@ -1,4 +1,4 @@
-class HistoryCommand extends Command {
+export default class HistoryCommand extends Command {
     constructor() {
         super("history", "Show your local search history.", false);
     }
@@ -46,4 +46,4 @@ class HistoryCommand extends Command {
         await storage.setItem("history", history);
         return historyItem;
     }
-}
+};

@@ -39,3 +39,5 @@ async function migrateLocalStorage(key) {
         await storage.setItem(key, value);
     }
 }
+
+export default storage;

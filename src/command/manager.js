@@ -1,4 +1,4 @@
-class CommandManager {
+export default class CommandManager {
     constructor(prefixOrCommand, ...commands) {
         // The `prefixOrCommand` argument was introduced at a later point, which would break
         // backwards compatibility. To avoid this breakage the following code checks if the provided
@@ -73,4 +73,4 @@ class CommandManager {
             }
         }
     }
-}
+};

@@ -1,7 +1,7 @@
 /**
  * A simple command to quick setup a list item of [name, url, description] data search.
  */
-class SimpleCommand extends Command {
+export default class SimpleCommand extends Command {
     constructor(name, description, index) {
         super(name, description);
         this.setIndex(index);
@@ -26,4 +26,4 @@ class SimpleCommand extends Command {
     setIndex(index) {
         this.index = index;
     }
-}
+};

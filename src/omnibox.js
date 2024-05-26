@@ -1,8 +1,19 @@
+import Render from "./render.js";
+import QueryEvent from "./query-event.js";
+
 const PAGE_TURNER = "-";
 const URL_PROTOCOLS = /^(https?|file|chrome-extension|moz-extension):\/\//i;
 
-class Omnibox {
-    constructor(defaultSuggestion, maxSuggestionSize = 8) {
+export default class Omnibox {
+    constructor({ el, icon, defaultSuggestion, maxSuggestionSize = 8 }) {
+        if (el) {
+            this.render = new Render({ el, icon });
+        } else if (chrome && chrome.omnibox) {
+            this.render = chrome.omnibox;
+        } else {
+            throw new Error("No element provided");
+        }
+
         this.maxSuggestionSize = maxSuggestionSize;
         this.defaultSuggestionDescription = defaultSuggestion;
         this.defaultSuggestionContent = null;
@@ -58,14 +69,24 @@ class Omnibox {
         return { query: query.join(" "), page };
     }
 
-    bootstrap({ onSearch, onFormat, onAppend, onEmptyNavigate, beforeNavigate, afterNavigated }) {
+    bootstrap({
+        onSearch,
+        onFormat,
+        onAppend,
+        onEmptyNavigate,
+        beforeNavigate,
+        afterNavigated
+    }) {
         this.globalEvent = new QueryEvent({ onSearch, onFormat, onAppend });
-        this.setDefaultSuggestion(this.defaultSuggestionDescription);
-        let results = [];
+        if (chrome) {
+            this.setDefaultSuggestion(this.defaultSuggestionDescription);
+        }
+        let results;
+        let appendixes = [];
         let currentInput;
         let defaultDescription;
 
-        chrome.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
+        this.render.onInputChanged.addListener(async (input, suggestFn) => {
             // Set the default suggestion content to input instead null,
             // this could prevent content null bug in onInputEntered().
             this.defaultSuggestionContent = input;
@@ -78,7 +99,10 @@ class Omnibox {
             let { query, page } = this.parse(input);
             // Always perform search if query is a noCachedQuery, then check whether equals to cachedQuery
             if (this.noCacheQueries.has(query) || this.cachedQuery !== query) {
-                results = await this.performSearch(query);
+                let searchResult = await this.performSearch(query);
+                results = searchResult.result;
+                appendixes = searchResult.appendixes;
+
                 this.cachedQuery = query;
                 this.cachedResult = results;
             } else {
@@ -94,11 +118,15 @@ class Omnibox {
             results = results
                 .map(({ event, ...item }, index) => {
                     if (event) {
-                        // onAppend result has event.
+                        // onAppend result has no event.
                         item = event.format(item, index);
                     }
                     if (uniqueUrls.has(item.content)) {
                         item.content += `?${uniqueUrls.size + 1}`;
+                    }
+                    if (index == 0) {
+                        // Add pagination tip in the first item.
+                        item.description += paginationTip;
                     }
                     if (totalPage > 1 && pageSize > 2 && index === pageSize - 1) {
                         // Add pagination tip in the last item.
@@ -107,17 +135,18 @@ class Omnibox {
                     uniqueUrls.add(item.content);
                     return item;
                 });
-            if (results.length > 0) {
+            if (results.length > 0 && chrome) {
                 let { content, description } = results.shift();
                 // Store the default description temporary.
                 defaultDescription = description;
-                description += paginationTip;
                 this.setDefaultSuggestion(description, content);
+                results.unshift({ content, description });
             }
+            results.push(...appendixes);
             suggestFn(results);
         });
 
-        chrome.omnibox.onInputEntered.addListener(async (content, disposition) => {
+        this.render.onInputEntered.addListener(async (content, disposition) => {
             let result;
             // Give beforeNavigate a default function
             beforeNavigate = beforeNavigate || (async (_, s) => s);
@@ -159,12 +188,15 @@ class Omnibox {
                 await onEmptyNavigate(content, disposition);
             }
 
-            this.setDefaultSuggestion(this.defaultSuggestionDescription);
+            if (chrome) {
+                this.setDefaultSuggestion(this.defaultSuggestionDescription);
+            }
         });
     }
 
     async performSearch(query) {
         let result;
+        let appendixes = [];
         let matchedEvent = this.queryEvents
             .sort((a, b) => {
                 // Descend sort query events by prefix length to prioritize
@@ -180,7 +212,7 @@ class Omnibox {
         if (matchedEvent) {
             result = await matchedEvent.performSearch(query);
             if (matchedEvent.onAppend) {
-                result.push(...matchedEvent.onAppend(query));
+                appendixes.push(...matchedEvent.onAppend(query));
             }
         } else {
             result = await this.globalEvent.performSearch(query);
@@ -204,11 +236,11 @@ class Omnibox {
             }
 
             if (this.globalEvent.onAppend) {
-                result.push(...this.globalEvent.onAppend(query));
+                appendixes.push(...this.globalEvent.onAppend(query));
             }
-            result.push(...defaultSearchAppendixes);
+            appendixes.push(...defaultSearchAppendixes);
         }
-        return result;
+        return { result, appendixes };
     }
 
     addNoCacheQueries(...queries) {
@@ -244,12 +276,20 @@ class Omnibox {
     static navigateToUrl(url, disposition) {
         url = url.replace(/\?\d+$/ig, "");
         if (disposition === "currentTab") {
-            chrome.tabs.query({ active: true }, tab => {
-                chrome.tabs.update(tab.id, { url });
-            });
+            if (chrome && chrome.tabs) {
+                chrome.tabs.query({ active: true }, tab => {
+                    chrome.tabs.update(tab.id, { url });
+                });
+            } else {
+                location.href = url;
+            }
         } else {
             // newForegroundTab, newBackgroundTab
-            chrome.tabs.create({ url });
+            if (chrome && chrome.tabs) {
+                chrome.tabs.create({ url });
+            } else {
+                window.open(url);
+            }
         }
     }
 }
