@@ -1,3 +1,5 @@
+import { c } from "../index";
+
 export default class HistoryCommand extends Command {
     constructor() {
         super("history", "Show your local search history.", false);

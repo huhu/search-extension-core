@@ -1,3 +1,5 @@
+import { c } from "../index";
+
 /**
  * A simple command to quick setup a list item of [name, url, description] data search.
  */

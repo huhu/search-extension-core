@@ -1,3 +1,5 @@
+import { c } from "../index";
+
 export default class CommandManager {
     constructor(prefixOrCommand, ...commands) {
         // The `prefixOrCommand` argument was introduced at a later point, which would break
