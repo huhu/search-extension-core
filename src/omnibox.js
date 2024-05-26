@@ -140,7 +140,6 @@ export default class Omnibox {
                 // Store the default description temporary.
                 defaultDescription = description;
                 this.setDefaultSuggestion(description, content);
-                results.unshift({ content, description });
             }
             results.push(...appendixes);
             suggestFn(results);
