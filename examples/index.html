@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnibox.js</title>
+    <link rel="stylesheet" href="../src/omnibox.css">
+</head>
+
+<body>
+    <div id="input" style="width: 800px; margin: 50px auto;"></div>
+</body>
+<script type="module">
+    import { Omnibox, QueryEvent, Render } from "../src/index.js";
+
+    let suggestions = {
+        "https://github.com": "Github",
+        "https://google.com": "Google",
+        "https://apple.com": "Apple",
+        "https://netflix.com": "Netflix",
+        "https://youtube.com": "YouTube",
+        "https://twitter.com": "Twitter",
+    };
+    suggestions = Object.entries(suggestions).map(([key, value]) => {
+        return { content: key, description: value }
+    });
+    const omnibox = new Omnibox({
+        el: "#input",
+        icon: "https://rust.extension.sh/logo.png",
+        defaultSuggestion: "Omnibox.js"
+    });
+    omnibox.bootstrap({
+        onSearch: (query) => {
+            return suggestions.filter(({ description }) => description.toLowerCase().indexOf(query.toLowerCase()) > -1);
+        },
+        onAppend: (query) => {
+            return [{
+                content: `https://google.com/search?q=${query}`,
+                description: `Search <match>${query}</match> on google`,
+            }]
+        }
+    });
+</script>
+
+</html>
