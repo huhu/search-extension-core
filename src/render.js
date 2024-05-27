@@ -48,7 +48,12 @@ class Render {
                 event.preventDefault();
             }
         });
-
+        document.addEventListener('click', (event) => {
+            if (!event.composedPath().includes(element)) {
+                // Click outside to clear dropdown
+                this.clearDropdown();
+            }
+        });
         document.addEventListener('keyup', async (event) => {
             switch (event.code) {
                 case 'Enter': {
@@ -111,7 +116,6 @@ class Render {
                 }
                 case 'Escape': {
                     this.clearDropdown();
-                    this.inputBox.classList.remove("omn-filled");
                     break;
                 }
             }
@@ -119,6 +123,8 @@ class Render {
     }
 
     clearDropdown() {
+        this.inputBox.classList.remove("omn-filled");
+
         let dropdown = document.querySelector('.omn-dropdown');
         if (dropdown) {
             dropdown.remove();
