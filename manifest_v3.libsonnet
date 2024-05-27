@@ -15,6 +15,7 @@ local resource = {
     description,
     version,
     service_worker,
+    module_type=false,
   ):: (
     manifest_common.new(name, keyword, description, version)
   ) {
@@ -28,6 +29,7 @@ local resource = {
     },
     background: {
       service_worker: service_worker,
+      [if module_type then 'type']: 'module',
     },
     web_accessible_resources: [],
     addWebAccessibleResources(resources, matches=[], extension_ids=[]):: self + {

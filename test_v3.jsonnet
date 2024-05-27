@@ -8,6 +8,7 @@ manifest.new(
   keyword='se',
   description='search...',
   service_worker="service_worker.js",
+  module_type=true,
 )
 .setOptionsUi("options/index.html")
 .addIcons({ '16': 'aaa.png', '32': 'bbb.png' })
