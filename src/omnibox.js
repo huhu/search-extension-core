@@ -14,6 +14,7 @@ export default class Omnibox {
             throw new Error("No element provided");
         }
 
+        this.extensionMode = !el;
         this.maxSuggestionSize = maxSuggestionSize;
         this.defaultSuggestionDescription = defaultSuggestion;
         this.defaultSuggestionContent = null;
@@ -80,7 +81,7 @@ export default class Omnibox {
         afterNavigated
     }) {
         this.globalEvent = new QueryEvent({ onSearch, onFormat, onAppend });
-        if (chrome) {
+        if (this.extensionMode) {
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
         }
         let results;
@@ -136,7 +137,7 @@ export default class Omnibox {
                     uniqueUrls.add(item.content);
                     return item;
                 });
-            if (results.length > 0 && chrome) {
+            if (results.length > 0 && this.extensionMode) {
                 let { content, description } = results.shift();
                 // Store the default description temporary.
                 defaultDescription = description;
@@ -188,7 +189,7 @@ export default class Omnibox {
                 await onEmptyNavigate(content, disposition);
             }
 
-            if (chrome) {
+            if (this.extensionMode) {
                 this.setDefaultSuggestion(this.defaultSuggestionDescription);
             }
         });
