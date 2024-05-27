@@ -34,7 +34,6 @@ class Render {
             this.inputBox.classList.add("omn-filled");
 
             let inputValue = event.target.value;
-            console.log(inputValue);
             if (inputValue) {
                 for (const listener of this.onInputChanged.listeners) {
                     await listener(inputValue, suggestFn);
@@ -51,7 +50,6 @@ class Render {
         });
 
         document.addEventListener('keyup', async (event) => {
-            console.log('keyup:', event);
             switch (event.code) {
                 case 'Enter': {
                     let selected = document.querySelector('.omn-selected');
@@ -74,35 +72,40 @@ class Render {
                 case 'ArrowUp': {
                     let selected = document.querySelector('.omn-selected');
                     if (selected) {
+                        let newSelected = null;
                         if (selected.previousElementSibling) {
-                            selected.previousElementSibling.classList.add('omn-selected');
+                            newSelected = selected.previousElementSibling;
                         } else {
                             // Already selected the fist item, but a arrow-up key pressed,
                             // select the last item.
-                            let lastChild = document.querySelector('.omn-dropdown-item:last-child');
-                            if (lastChild) {
-                                lastChild.classList.add('omn-selected');
-                            }
+                            newSelected = document.querySelector('.omn-dropdown-item:last-child');
                         }
 
-                        selected.classList.remove('omn-selected');
+                        if (newSelected) {
+                            selected.classList.remove('omn-selected');
+                            newSelected.classList.add('omn-selected')
+                            this.inputBox.value = newSelected.getAttribute('data-value');
+                        }
                     }
                     break;
                 }
                 case 'ArrowDown': {
                     let selected = document.querySelector('.omn-selected');
                     if (selected) {
+                        let newSelected = null;
                         if (selected.nextElementSibling) {
-                            selected.nextElementSibling.classList.add('omn-selected');
+                            newSelected = selected.nextElementSibling;
                         } else {
                             // Already selected the last item, but a arrow-up key pressed,
                             // select the fist item.
-                            let firstChild = document.querySelector('.omn-dropdown-item:first-child');
-                            if (firstChild) {
-                                firstChild.classList.add('omn-selected');
-                            }
+                            newSelected = document.querySelector('.omn-dropdown-item:first-child');
                         }
-                        selected.classList.remove('omn-selected');
+
+                        if (newSelected) {
+                            selected.classList.remove('omn-selected');
+                            newSelected.classList.add('omn-selected')
+                            this.inputBox.value = newSelected.getAttribute('data-value');
+                        }
                     }
                     break;
                 }
@@ -136,16 +139,20 @@ class Render {
             li.classList.add("omn-dropdown-item");
             li.style.position = "relative";
             li.setAttribute("data-content", content);
+            if (index === 0) {
+                // Always select the first item by default.
+                li.classList.add('omn-selected');
+                // Set the inputbox value as data-value, similar to chrome.omnibox API
+                li.setAttribute("data-value", this.inputBox.value);
+            } else {
+                li.setAttribute("data-value", content);
+            }
             li.innerHTML = `<div class="omn-dropdown-indicator"></div>
                             <div>
                             <a href="${content}">
                             ${this.icon ? `<img src=\"${this.icon}\"/>` : ""}
                             ${parseOmniboxDescription(description)}
                             </a></div>`;
-            if (index === 0) {
-                // Always select the first item by default.
-                li.classList.add('omn-selected');
-            }
             container.appendChild(li);
         }
         dropdown.appendChild(container);

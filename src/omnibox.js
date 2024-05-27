@@ -26,7 +26,9 @@ export default class Omnibox {
     }
 
     setDefaultSuggestion(description, content) {
-        chrome.omnibox.setDefaultSuggestion({ description });
+        if (chrome && chrome.omnibox) {
+            chrome.omnibox.setDefaultSuggestion({ description });
+        }
 
         if (content) {
             this.defaultSuggestionContent = content;
