@@ -54,6 +54,7 @@
 }
 
 .omn-dropdown-item a {
+  font-weight: normal;
   text-decoration: none;
   color: inherit;
   text-overflow: ellipsis;
