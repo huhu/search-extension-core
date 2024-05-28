@@ -10,6 +10,7 @@
   margin: 0 auto;
   width: 100%;
   padding: 12px 15px;
+  font-size: 16px;
 }
 
 .omn-filled {
@@ -55,6 +56,9 @@
 .omn-dropdown-item a {
   text-decoration: none;
   color: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .omn-dropdown-item a:visited {

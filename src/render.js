@@ -157,11 +157,10 @@ class Render {
                 li.setAttribute("data-value", content);
             }
             li.innerHTML = `<div class="omn-dropdown-indicator"></div>
-                            <div>
                             <a href="${content}">
                             ${this.icon ? `<img src=\"${this.icon}\"/>` : ""}
                             ${parseOmniboxDescription(description)}
-                            </a></div>`;
+                            </a>`;
             container.appendChild(li);
         }
         dropdown.appendChild(container);
