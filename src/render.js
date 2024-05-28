@@ -57,7 +57,7 @@ class Render {
                 this.clearDropdown();
             }
         });
-        document.addEventListener('keyup', async (event) => {
+        document.addEventListener('keydown', async (event) => {
             switch (event.code) {
                 case 'Enter': {
                     let selected = document.querySelector('.omn-selected');
