@@ -47,8 +47,9 @@
 }
 
 .omn-dropdown-item {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   display: flex;
+  font-size: 16px;
 }
 
 .omn-dropdown-item a {
