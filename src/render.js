@@ -3,7 +3,7 @@ const DISPOSITION_FOREGROUND_TAB = 'newForegroundTab'; // alt + enter
 const DISPOSITION_BACKROUND_TAB = 'newBackgroundTab'; // meta + enter
 
 class Render {
-    constructor({ el, icon }) {
+    constructor({ el, icon, placeholder }) {
         let element = document.querySelector(el);
         if (!element) {
             throw new Error(`not element found: ${el}`);
@@ -23,6 +23,9 @@ class Render {
             spellcheck="false"></textarea>
         `;
         this.inputBox = element.querySelector("textarea");
+        if (placeholder) {
+            this.inputBox.setAttribute("placeholder", placeholder);
+        }
         this.icon = icon;
         this.onInputChanged = new OnInputChangedListener();
         this.onInputEntered = new OnInputEnteredListener();
