@@ -35,6 +35,9 @@
         onSearch: (query) => {
             return suggestions.filter(({ description }) => description.toLowerCase().indexOf(query.toLowerCase()) > -1);
         },
+        onFormat: (index, doc) => {
+            return { description: `<match>${doc.description}</match> - <dim>${doc.content}</dim>`, content: doc.content };
+        },
         onAppend: (query) => {
             return [{
                 content: `https://google.com/search?q=${query}`,
