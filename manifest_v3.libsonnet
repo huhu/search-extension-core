@@ -14,8 +14,8 @@ local resource = {
     keyword,
     description,
     version,
-    service_worker,
-    module_type=false,
+    service_worker=null,
+    background_page=null,
   ):: (
     manifest_common.new(name, keyword, description, version)
   ) {
@@ -28,8 +28,9 @@ local resource = {
       extension_pages: "script-src 'self'; object-src 'self';",
     },
     background: {
-      service_worker: service_worker,
-      [if module_type then 'type']: 'module',
+      [if service_worker != null then 'service_worker']: service_worker,
+      [if service_worker != null then 'type']: 'module',
+      [if background_page != null then 'page']: background_page,
     },
     web_accessible_resources: [],
     addWebAccessibleResources(resources, matches=[], extension_ids=[]):: self + {
