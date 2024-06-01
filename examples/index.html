@@ -14,6 +14,9 @@
 </body>
 <script type="module">
     import { Omnibox, QueryEvent, Render } from "../src/index.js";
+    import CommandManager from "../src/command/manager.js";
+    import HistoryCommand from "../src/command/history.js";
+    import storage from "../src/storage.js";
 
     let suggestions = {
         "https://github.com": "Github",
@@ -31,6 +34,9 @@
         icon: "https://rust.extension.sh/logo.png",
         defaultSuggestion: "Omnibox.js"
     });
+    const commandManager = new CommandManager(
+        new HistoryCommand(),
+    );
     omnibox.bootstrap({
         onSearch: (query) => {
             return suggestions.filter(({ description }) => description.toLowerCase().indexOf(query.toLowerCase()) > -1);
@@ -43,7 +49,19 @@
                 content: `https://google.com/search?q=${query}`,
                 description: `Search <match>${query}</match> on google`,
             }]
-        }
+        },
+        afterNavigated: async (query, result) => {
+            // Ignore the command history
+            if (query?.startsWith(":")) return;
+            // Only keep the latest 100 of search history.
+            await HistoryCommand.record(query, result, 100);
+        },
+    });
+
+    omnibox.addPrefixQueryEvent(":", {
+        onSearch: async (query) => {
+            return commandManager.execute(query);
+        },
     });
 </script>
 
