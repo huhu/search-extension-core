@@ -14,12 +14,12 @@ export default class Compat {
         return "unknown";
     }
 
-    omniboxPageSize() {
+    static omniboxPageSize() {
         return { "firefox": 6, "edge": 7, "chrome": 8, "unknown": 6 }[Compat.browserType()];
     }
 
     // Escape the special characters to display them as text.
-    escape(str) {
+    static escape(str) {
         str = str || "";
         if (Compat.browserType() === "firefox") {
             // Firefox support <,> in omnibox and doesn't support escaped characters.
