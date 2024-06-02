@@ -1,3 +1,4 @@
+import Compat from "./compat.js";
 import Render from "./render.js";
 import QueryEvent from "./query-event.js";
 
@@ -15,6 +16,7 @@ export default class Omnibox {
         }
 
         this.extensionMode = !el;
+        this.browserType = Compat.browserType();
         this.maxSuggestionSize = maxSuggestionSize;
         this.defaultSuggestionDescription = defaultSuggestion;
         this.defaultSuggestionContent = null;
@@ -33,6 +35,19 @@ export default class Omnibox {
 
         if (content) {
             this.defaultSuggestionContent = content;
+        }
+    }
+
+
+    escapeDescription(description) {
+        if (this.extensionMode && this.browserType === 'firefox') {
+            // Firefox doesn't support tags in search suggestion.
+            return description.replaceAll("<match>", "")
+                .replaceAll("</match>", "")
+                .replaceAll("<dim>", "")
+                .replaceAll("</dim>", "");
+        } else {
+            return description
         }
     }
 
@@ -134,6 +149,8 @@ export default class Omnibox {
                         // Add pagination tip in the last item.
                         item.description += paginationTip;
                     }
+                    // escape the description
+                    item.description = this.escapeDescription(item.description);
                     uniqueUrls.add(item.content);
                     return item;
                 });
