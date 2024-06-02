@@ -1,4 +1,4 @@
-import { c } from "../index.js";
+import { Compat } from "../index.js";
 import Command from "./base.js";
 import storage from "../storage.js";
 
@@ -38,7 +38,7 @@ export default class HistoryCommand extends Command {
         if (!query || !result) return;
 
         let { content, description } = result;
-        description = c.eliminateTags(description);
+        description = Compat.eliminateTags(description);
         let history = await storage.getItem("history") || [];
         let historyItem = { query, content, description, time: Date.now() };
         history.push(historyItem);

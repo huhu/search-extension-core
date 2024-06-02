@@ -1,4 +1,4 @@
-import { c } from "../index.js";
+import { Compat } from "../index.js";
 import Command from "./base.js";
 
 /**
@@ -15,9 +15,9 @@ export default class SimpleCommand extends Command {
             .filter(([name, _, description]) => !arg || name.toLowerCase().indexOf(arg) > -1 || (description?.toLowerCase().indexOf(arg) > -1))
             .map(([name, url, description]) => {
                 if (description) {
-                    description = `${c.match(name)} - ${c.dim(c.escape(description))}`;
+                    description = `<match>${name}</match> - <dim>${Compat.escape(description)}</dim>`;
                 } else {
-                    description = `${c.match(name)} - ${c.dim(url)}`;
+                    description = `<match>${name}</match> - <dim>${url}</dim>`;
                 }
                 return {
                     content: url,

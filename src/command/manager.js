@@ -1,5 +1,3 @@
-import { c } from "../index.js";
-
 export default class CommandManager {
     constructor(prefixOrCommand, ...commands) {
         // The `prefixOrCommand` argument was introduced at a later point, which would break
@@ -46,7 +44,7 @@ export default class CommandManager {
                 .map(cmd => {
                     return {
                         content: `${this.prefix}${cmd.name}`,
-                        description: `${c.match(this.prefix + cmd.name)} - ${c.dim(cmd.description)}`
+                        description: `<match>${this.prefix + cmd.name}</match> - <dim>${cmd.description}</dim>`
                     }
                 });
 
@@ -59,7 +57,7 @@ export default class CommandManager {
                 ];
             } else {
                 return [
-                    { content: "", description: `No ${c.match(this.prefix + name)} command found, try following commands?` },
+                    { content: "", description: `No <match>${this.prefix + name}</match> command found, try following commands?` },
                     ...list
                 ];
             }
