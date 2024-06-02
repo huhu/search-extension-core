@@ -116,7 +116,12 @@ export default class Omnibox {
             if (this.noCacheQueries.has(query) || this.cachedQuery !== query) {
                 let searchResult = await this.performSearch(query);
                 results = searchResult.result;
-                appendixes = searchResult.appendixes;
+                appendixes = searchResult.appendixes.map(({ content, description }) => {
+                    return {
+                        content,
+                        description: this.escapeDescription(description),
+                    }
+                });
 
                 this.cachedQuery = query;
                 this.cachedResult = results;
