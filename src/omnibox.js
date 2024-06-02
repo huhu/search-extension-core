@@ -18,7 +18,7 @@ export default class Omnibox {
         this.extensionMode = !el;
         this.browserType = Compat.browserType();
         this.maxSuggestionSize = maxSuggestionSize;
-        this.defaultSuggestionDescription = defaultSuggestion;
+        this.defaultSuggestionDescription = this.escapeDescription(defaultSuggestion);
         this.defaultSuggestionContent = null;
         this.queryEvents = [];
         // Cache the last query and result to speed up the page down.
@@ -42,10 +42,7 @@ export default class Omnibox {
     escapeDescription(description) {
         if (this.extensionMode && this.browserType === 'firefox') {
             // Firefox doesn't support tags in search suggestion.
-            return description.replaceAll("<match>", "")
-                .replaceAll("</match>", "")
-                .replaceAll("<dim>", "")
-                .replaceAll("</dim>", "");
+            return Compat.eliminateTags(description);
         } else {
             return description
         }
