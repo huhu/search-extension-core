@@ -6,16 +6,10 @@ const PAGE_TURNER = "-";
 const URL_PROTOCOLS = /^(https?|file|chrome-extension|moz-extension):\/\//i;
 
 export default class Omnibox {
-    constructor({ el, icon, defaultSuggestion, maxSuggestionSize = 8 }) {
-        if (el) {
-            this.render = new Render({ el, icon, placeholder: defaultSuggestion });
-        } else if (chrome && chrome.omnibox) {
-            this.render = chrome.omnibox;
-        } else {
-            throw new Error("No element provided");
-        }
-
-        this.extensionMode = !el;
+    constructor({ render, defaultSuggestion, maxSuggestionSize = 8 }) {
+        this.render = render;
+        this.extensionMode = render === chrome.omnibox;
+        console.log("extension mode:", this.extensionMode);
         this.browserType = Compat.browserType();
         this.maxSuggestionSize = maxSuggestionSize;
         this.defaultSuggestionDescription = this.escapeDescription(defaultSuggestion);
@@ -26,6 +20,22 @@ export default class Omnibox {
         this.cachedResult = null;
         // A set of query which should not be cached.
         this.noCacheQueries = new Set();
+    }
+
+    static extension({ defaultSuggestion, maxSuggestionSize = 8 }) {
+        return new Omnibox({
+            render: chrome.omnibox,
+            defaultSuggestion,
+            maxSuggestionSize,
+        });
+    }
+
+    static webpage({ el, icon, placeholder, defaultSuggestion, maxSuggestionSize = 8 }) {
+        return new Omnibox({
+            render: new Render({ el, icon, placeholder }),
+            defaultSuggestion,
+            maxSuggestionSize,
+        });
     }
 
     setDefaultSuggestion(description, content) {

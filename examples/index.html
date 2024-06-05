@@ -29,9 +29,10 @@
     suggestions = Object.entries(suggestions).map(([key, value]) => {
         return { content: key, description: value }
     });
-    const omnibox = new Omnibox({
+    const omnibox = Omnibox.webpage({
         el: "#input",
         icon: "https://rust.extension.sh/logo.png",
+        placeholder: "Start search with omnibox.js",
         defaultSuggestion: "Omnibox.js"
     });
     const commandManager = new CommandManager(
