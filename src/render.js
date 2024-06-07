@@ -34,7 +34,7 @@ class Render {
         this.disposition = DISPOSITION_CURRENT_TAB;
 
         let suggestFn = this.suggest.bind(this);
-        this.inputBox.addEventListener("input", async (event) => {
+        this.trigger = async (event) => {
             this.clearDropdown();
             this.container.classList.add("omn-filled");
 
@@ -47,7 +47,9 @@ class Render {
                 this.container.classList.remove("omn-filled");
                 this.removeHint();
             }
-        });
+        };
+        this.inputBox.oninput = this.trigger;
+        this.inputBox.onfocus = this.trigger;
         this.inputBox.addEventListener("keydown", (event) => {
             if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === "Enter") {
                 // Prevent the default behavior of arrow up and arrow down keys

@@ -245,7 +245,6 @@ export default class Omnibox {
 
         if (matchedEvent) {
             if (this.hintEnabled && matchedEvent.name) {
-                console.log(`[${matchedEvent.name}] ${query}`);
                 this.render.setHint(matchedEvent.name);
             }
             result = await matchedEvent.performSearch(query);
