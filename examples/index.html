@@ -33,7 +33,7 @@
         el: "#input",
         icon: "https://rust.extension.sh/logo.png",
         placeholder: "Start search with omnibox.js",
-        defaultSuggestion: "Omnibox.js"
+        defaultSuggestion: "Omnibox.js",
     });
     const commandManager = new CommandManager(
         new HistoryCommand(),
@@ -60,6 +60,7 @@
     });
 
     omnibox.addPrefixQueryEvent(":", {
+        name: "Command",
         onSearch: async (query) => {
             return commandManager.execute(query);
         },

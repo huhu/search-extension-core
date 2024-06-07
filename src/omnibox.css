@@ -1,4 +1,4 @@
-.omn-input {
+.omn-container {
   box-sizing: border-box;
   display: flex;
   z-index: 3;
@@ -11,6 +11,26 @@
   width: 100%;
   padding: 12px 15px;
   font-size: 16px;
+  align-items: center;
+}
+
+.omn-input {
+  width: 100%;
+  border: transparent;
+  padding: 5px;
+}
+
+.omn-hint {
+  display: flex;
+  color: #2559c9;
+}
+
+.omn-hint-gapline {
+  width: 1px;
+  height: 15px;
+  background: #9cb5eb;
+  margin: 0 5px;
+  align-self: center;
 }
 
 .omn-filled {

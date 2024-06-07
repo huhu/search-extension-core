@@ -17,11 +17,13 @@ class Render {
             throw new Error("The `el` element should have no child nodes");
         }
         element.style.position = "relative";
-        element.innerHTML = `<textarea class="omn-input"
+        element.innerHTML = `<div class="omn-container">
+            <textarea class="omn-input"
             autocapitalize="off" autocomplete="off" autocorrect="off" 
             maxlength="2048" role="combobox" rows="1" style="resize:none"
-            spellcheck="false"></textarea>
+            spellcheck="false"></textarea></div>
         `;
+        this.container = document.querySelector(".omn-container");
         this.inputBox = element.querySelector("textarea");
         if (placeholder) {
             this.inputBox.setAttribute("placeholder", placeholder);
@@ -34,7 +36,7 @@ class Render {
         let suggestFn = this.suggest.bind(this);
         this.inputBox.addEventListener("input", async (event) => {
             this.clearDropdown();
-            this.inputBox.classList.add("omn-filled");
+            this.container.classList.add("omn-filled");
 
             let inputValue = event.target.value;
             if (inputValue) {
@@ -42,7 +44,8 @@ class Render {
                     await listener(inputValue, suggestFn);
                 }
             } else {
-                this.inputBox.classList.remove("omn-filled");
+                this.container.classList.remove("omn-filled");
+                this.removeHint();
             }
         });
         this.inputBox.addEventListener("keydown", (event) => {
@@ -126,11 +129,30 @@ class Render {
     }
 
     clearDropdown() {
-        this.inputBox.classList.remove("omn-filled");
+        this.container.classList.remove("omn-filled");
 
         let dropdown = document.querySelector('.omn-dropdown');
         if (dropdown) {
             dropdown.remove();
+        }
+    }
+
+    setHint(hintText) {
+        let hint = document.querySelector('.omn-hint');
+        if (!hint) {
+            let hintElement = document.createElement('div');
+            hintElement.classList.add('omn-hint');
+            hintElement.textContent = hintText;
+            this.container.insertAdjacentHTML('afterbegin', `
+                <div class="omn-hint">${hintText}<div class="omn-hint-gapline"></div></div>
+            `);
+        }
+    }
+
+    removeHint() {
+        let hint = document.querySelector('.omn-hint');
+        if (hint) {
+            hint.remove();
         }
     }
 
@@ -164,7 +186,7 @@ class Render {
             container.appendChild(li);
         }
         dropdown.appendChild(container);
-        this.inputBox.insertAdjacentElement('afterend', dropdown);
+        this.container.insertAdjacentElement('afterend', dropdown);
     }
 }
 

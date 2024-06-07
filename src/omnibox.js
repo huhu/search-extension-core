@@ -6,7 +6,7 @@ const PAGE_TURNER = "-";
 const URL_PROTOCOLS = /^(https?|file|chrome-extension|moz-extension):\/\//i;
 
 export default class Omnibox {
-    constructor({ render, defaultSuggestion, maxSuggestionSize = 8 }) {
+    constructor({ render, defaultSuggestion, maxSuggestionSize = 8, hint = false }) {
         this.render = render;
         this.extensionMode = render === chrome.omnibox;
         console.log("extension mode:", this.extensionMode);
@@ -20,6 +20,9 @@ export default class Omnibox {
         this.cachedResult = null;
         // A set of query which should not be cached.
         this.noCacheQueries = new Set();
+        if (!this.extensionMode) {
+            this.hintEnabled = hint;
+        }
     }
 
     static extension({ defaultSuggestion, maxSuggestionSize = 8 }) {
@@ -30,11 +33,12 @@ export default class Omnibox {
         });
     }
 
-    static webpage({ el, icon, placeholder, defaultSuggestion, maxSuggestionSize = 8 }) {
+    static webpage({ el, icon, placeholder, defaultSuggestion, maxSuggestionSize = 8, hint = true }) {
         return new Omnibox({
             render: new Render({ el, icon, placeholder }),
             defaultSuggestion,
             maxSuggestionSize,
+            hint,
         });
     }
 
@@ -240,6 +244,9 @@ export default class Omnibox {
             });
 
         if (matchedEvent) {
+            if (this.hintEnabled && matchedEvent.name) {
+                this.render.setHint(matchedEvent.name);
+            }
             result = await matchedEvent.performSearch(query);
             if (matchedEvent.onAppend) {
                 appendixes.push(...matchedEvent.onAppend(query));
