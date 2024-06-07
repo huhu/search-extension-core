@@ -59,7 +59,7 @@ class Render {
         document.addEventListener('click', (event) => {
             if (!event.composedPath().includes(element)) {
                 // Click outside to clear dropdown
-                this.clearDropdown();
+                this.resetSearchKeyword();
             }
         });
         document.addEventListener('keydown', async (event) => {
@@ -123,11 +123,22 @@ class Render {
                     break;
                 }
                 case 'Escape': {
-                    this.clearDropdown();
+                    this.resetSearchKeyword();
                     break;
                 }
             }
         });
+    }
+
+    resetSearchKeyword() {
+        // Reset the input box value to the search keyword
+        let dropdown = document.querySelector('.omn-dropdown');
+        if (dropdown) {
+            let item = dropdown.querySelector(".omn-dropdown-item")
+            this.inputBox.value = item.getAttribute('data-value');
+        }
+
+        this.clearDropdown();
     }
 
     clearDropdown() {
