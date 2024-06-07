@@ -71,6 +71,12 @@
             return commandManager.execute(query);
         },
     });
+    omnibox.addPrefixQueryEvent("web:", {
+        name: "Web mode",
+        onSearch: async (query) => {
+            return commandManager.execute(query);
+        },
+    });
 </script>
 
 </html>

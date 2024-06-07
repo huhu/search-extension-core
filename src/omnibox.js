@@ -252,6 +252,9 @@ export default class Omnibox {
                 appendixes.push(...matchedEvent.onAppend(query));
             }
         } else {
+            if (this.hintEnabled) {
+                this.render.removeHint();
+            }
             result = await this.globalEvent.performSearch(query);
             let defaultSearchEvents = this.queryEvents
                 .filter(event => {
