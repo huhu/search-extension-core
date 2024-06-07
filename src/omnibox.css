@@ -23,6 +23,7 @@
 .omn-hint {
   display: flex;
   color: #2559c9;
+  text-wrap: nowrap;
 }
 
 .omn-hint-gapline {
