@@ -138,15 +138,13 @@ class Render {
     }
 
     setHint(hintText) {
-        let hint = document.querySelector('.omn-hint');
-        if (!hint) {
-            let hintElement = document.createElement('div');
-            hintElement.classList.add('omn-hint');
-            hintElement.textContent = hintText;
-            this.container.insertAdjacentHTML('afterbegin', `
-                <div class="omn-hint">${hintText}<div class="omn-hint-gapline"></div></div>
-            `);
-        }
+        this.removeHint();
+        let hintElement = document.createElement('div');
+        hintElement.classList.add('omn-hint');
+        hintElement.textContent = hintText;
+        this.container.insertAdjacentHTML('afterbegin', `
+        <div class="omn-hint">${hintText}<div class="omn-hint-gapline"></div></div>
+        `);
     }
 
     removeHint() {

@@ -65,6 +65,12 @@
             return commandManager.execute(query);
         },
     });
+    omnibox.addPrefixQueryEvent("::", {
+        name: "Super Command",
+        onSearch: async (query) => {
+            return commandManager.execute(query);
+        },
+    });
 </script>
 
 </html>
