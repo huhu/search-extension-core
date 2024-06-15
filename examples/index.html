@@ -61,6 +61,10 @@
 
     omnibox.addPrefixQueryEvent(":", {
         name: "Command",
+        defaultSearch: true,
+        isDefaultSearch: async () => {
+            return false;
+        },
         onSearch: async (query) => {
             return commandManager.execute(query);
         },

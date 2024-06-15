@@ -256,17 +256,19 @@ export default class Omnibox {
                 this.render.removeHint();
             }
             result = await this.globalEvent.performSearch(query);
-            let defaultSearchEvents = this.queryEvents
-                .filter(event => {
-                    // The isDefaultSearch hook method is preferred over defaultSearch property.
-                    if (event.isDefaultSearch) {
-                        return event.isDefaultSearch();
-                    } else {
-                        return event.defaultSearch;
+            let defaultSearchEvents = [];
+            for (let event of this.queryEvents) {
+                // The isDefaultSearch hook method is preferred over defaultSearch property.
+                if (event.isDefaultSearch) {
+                    if (await event.isDefaultSearch()) {
+                        defaultSearchEvents.push(event);
                     }
-                })
-                // The smaller, the higher order
-                .sort((a, b) => a.searchPriority - b.searchPriority);
+                } else if (event.defaultSearch) {
+                    defaultSearchEvents.push(event);
+                }
+            }
+            defaultSearchEvents.sort((a, b) => a.searchPriority - b.searchPriority);
+
             let defaultSearchAppendixes = [];
             for (let event of defaultSearchEvents) {
                 result.push(...await event.performSearch(query));
