@@ -149,11 +149,11 @@ export default class Omnibox {
             // Slice the page data then format this data.
             results = results.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
             let pageSize = results.length;
-            results = results
-                .map(({ event, ...item }, index) => {
+            results = await Promise.all(results
+                .map(async ({ event, ...item }, index) => {
                     if (event) {
                         // onAppend result has no event.
-                        item = event.format(item, index);
+                        item = await event.format(item, index);
                     }
                     if (uniqueUrls.has(item.content)) {
                         item.content += `?${uniqueUrls.size + 1}`;
@@ -169,7 +169,7 @@ export default class Omnibox {
                     item.description = this.escapeDescription(item.description);
                     uniqueUrls.add(item.content);
                     return item;
-                });
+                }));
             if (results.length > 0 && this.extensionMode) {
                 let { content, description } = results.shift();
                 // Store the default description temporary.
@@ -249,7 +249,7 @@ export default class Omnibox {
             }
             result = await matchedEvent.performSearch(query);
             if (matchedEvent.onAppend) {
-                appendixes.push(...matchedEvent.onAppend(query));
+                appendixes.push(...await matchedEvent.onAppend(query));
             }
         } else {
             if (this.hintEnabled) {
@@ -271,12 +271,12 @@ export default class Omnibox {
             for (let event of defaultSearchEvents) {
                 result.push(...await event.performSearch(query));
                 if (event.onAppend) {
-                    defaultSearchAppendixes.push(...event.onAppend(query));
+                    defaultSearchAppendixes.push(...await event.onAppend(query));
                 }
             }
 
             if (this.globalEvent.onAppend) {
-                appendixes.push(...this.globalEvent.onAppend(query));
+                appendixes.push(...await this.globalEvent.onAppend(query));
             }
             appendixes.push(...defaultSearchAppendixes);
         }
