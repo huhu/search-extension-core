@@ -224,6 +224,8 @@ export default class Omnibox {
 
             if (this.extensionMode) {
                 this.setDefaultSuggestion(this.defaultSuggestionDescription);
+            } else {
+                this.render.resetSearchKeyword();
             }
         });
     }
