@@ -35,17 +35,14 @@ class Render {
 
         let suggestFn = this.suggest.bind(this);
         this.trigger = async (event) => {
-            this.clearDropdown();
-            this.container.classList.add("omn-filled");
-
             let inputValue = event.target.value;
             if (inputValue) {
                 for (const listener of this.onInputChanged.listeners) {
                     await listener(inputValue, suggestFn);
                 }
             } else {
-                this.container.classList.remove("omn-filled");
                 this.removeHint();
+                this.clearDropdown();
             }
         };
         this.inputBox.oninput = this.trigger;
@@ -168,6 +165,9 @@ class Render {
     }
 
     suggest(suggestions) {
+        this.clearDropdown();
+        this.container.classList.add("omn-filled");
+
         let dropdown = document.createElement('div');
         dropdown.classList.add('omn-dropdown');
 
