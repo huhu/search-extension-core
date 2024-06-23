@@ -61,7 +61,7 @@ export default class Compat {
 
     static eliminateTags(value) {
         if (value) {
-            return value.replace(/<\/?(match|dim|code|em|strong)>/g, "");
+            return value.replace(/<\/?(match|dim|code|em|strong|span)>/g, "");
         }
         return "";
     }
