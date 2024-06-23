@@ -131,8 +131,10 @@ class Render {
         // Reset the input box value to the search keyword
         let dropdown = document.querySelector('.omn-dropdown');
         if (dropdown) {
-            let item = dropdown.querySelector(".omn-dropdown-item")
-            this.inputBox.value = item.getAttribute('data-value');
+            let item = dropdown.querySelector(".omn-dropdown-item");
+            if (item) {
+                this.inputBox.value = item.getAttribute('data-value');
+            }
         }
 
         this.clearDropdown();
