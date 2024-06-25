@@ -8,7 +8,7 @@ const URL_PROTOCOLS = /^(https?|file|chrome-extension|moz-extension):\/\//i;
 export default class Omnibox {
     constructor({ render, defaultSuggestion, maxSuggestionSize = 8, hint = false }) {
         this.render = render;
-        this.extensionMode = render === chrome.omnibox;
+        this.extensionMode = !(render instanceof Render);
         console.log("extension mode:", this.extensionMode);
         this.browserType = Compat.browserType();
         this.maxSuggestionSize = maxSuggestionSize;
@@ -43,7 +43,7 @@ export default class Omnibox {
     }
 
     setDefaultSuggestion(description, content) {
-        if (chrome && chrome.omnibox) {
+        if (window.chrome?.omnibox) {
             chrome.omnibox.setDefaultSuggestion({ description });
         }
 
@@ -321,7 +321,7 @@ export default class Omnibox {
     static navigateToUrl(url, disposition) {
         url = url.replace(/\?\d+$/ig, "");
         if (disposition === "currentTab") {
-            if (chrome && chrome.tabs) {
+            if (window.chrome?.tabs) {
                 chrome.tabs.query({ active: true }, tab => {
                     chrome.tabs.update(tab.id, { url });
                 });
@@ -330,7 +330,7 @@ export default class Omnibox {
             }
         } else {
             // newForegroundTab, newBackgroundTab
-            if (chrome && chrome.tabs) {
+            if (window.chrome?.tabs) {
                 chrome.tabs.create({ url });
             } else {
                 window.open(url);

@@ -1,6 +1,6 @@
 let storage = null;
 
-if (chrome && chrome.storage) {
+if (window.chrome?.storage) {
     // Mimic localStorage API with chrome.storage.
     // See also: https://developer.chrome.com/docs/extensions/reference/storage/
     storage = {
@@ -31,7 +31,6 @@ if (chrome && chrome.storage) {
 } else {
     storage = {
         getAllItems: () => new Promise(resolve => {
-            // chrome.storage.local.get(null, resolve);
         }),
         // Gets one or more items from storage.
         getItem: key => new Promise(resolve => {
@@ -55,7 +54,6 @@ if (chrome && chrome.storage) {
         }),
         // Removes one or more items from storage.
         removeItem: key => new Promise(resolve => {
-            // chrome.storage.local.remove(key, resolve);
             localStorage.removeItem(key);
             resolve();
         }),
