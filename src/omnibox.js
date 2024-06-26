@@ -43,7 +43,7 @@ export default class Omnibox {
     }
 
     setDefaultSuggestion(description, content) {
-        if (window.chrome?.omnibox) {
+        if (chrome?.omnibox) {
             chrome.omnibox.setDefaultSuggestion({ description });
         }
 
@@ -321,7 +321,7 @@ export default class Omnibox {
     static navigateToUrl(url, disposition) {
         url = url.replace(/\?\d+$/ig, "");
         if (disposition === "currentTab") {
-            if (window.chrome?.tabs) {
+            if (chrome?.tabs) {
                 chrome.tabs.query({ active: true }, tab => {
                     chrome.tabs.update(tab.id, { url });
                 });
@@ -330,7 +330,7 @@ export default class Omnibox {
             }
         } else {
             // newForegroundTab, newBackgroundTab
-            if (window.chrome?.tabs) {
+            if (chrome?.tabs) {
                 chrome.tabs.create({ url });
             } else {
                 window.open(url);
