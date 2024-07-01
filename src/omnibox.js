@@ -9,7 +9,6 @@ export default class Omnibox {
     constructor({ render, defaultSuggestion, maxSuggestionSize = 8, hint = false }) {
         this.render = render;
         this.extensionMode = !(render instanceof Render);
-        console.log("extension mode:", this.extensionMode);
         this.browserType = Compat.browserType();
         this.maxSuggestionSize = maxSuggestionSize;
         this.defaultSuggestionDescription = this.escapeDescription(defaultSuggestion);
@@ -43,7 +42,7 @@ export default class Omnibox {
     }
 
     setDefaultSuggestion(description, content) {
-        if (window.chrome?.omnibox) {
+        if (this.extensionMode) {
             chrome.omnibox.setDefaultSuggestion({ description });
         }
 
@@ -321,7 +320,7 @@ export default class Omnibox {
     static navigateToUrl(url, disposition) {
         url = url.replace(/\?\d+$/ig, "");
         if (disposition === "currentTab") {
-            if (window.chrome?.tabs) {
+            if (Compat.isRunningInWebExtension()) {
                 chrome.tabs.query({ active: true }, tab => {
                     chrome.tabs.update(tab.id, { url });
                 });
@@ -330,7 +329,7 @@ export default class Omnibox {
             }
         } else {
             // newForegroundTab, newBackgroundTab
-            if (window.chrome?.tabs) {
+            if (Compat.isRunningInWebExtension()) {
                 chrome.tabs.create({ url });
             } else {
                 window.open(url);

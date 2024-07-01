@@ -1,6 +1,8 @@
+import Compat from "./compat.js";
+
 let storage = null;
 
-if (window.chrome?.storage) {
+if (Compat.isRunningInWebExtension()) {
     // Mimic localStorage API with chrome.storage.
     // See also: https://developer.chrome.com/docs/extensions/reference/storage/
     storage = {

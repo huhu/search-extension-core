@@ -14,6 +14,10 @@ export default class Compat {
         return "unknown";
     }
 
+    static isRunningInWebExtension() {
+        return typeof chrome === "object";
+    }
+
     static omniboxPageSize() {
         return { "firefox": 6, "edge": 7, "chrome": 8, "unknown": 6 }[Compat.browserType()];
     }
