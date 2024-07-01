@@ -1,6 +1,6 @@
 let storage = null;
 
-if (chrome?.storage) {
+if (window.chrome?.storage) {
     // Mimic localStorage API with chrome.storage.
     // See also: https://developer.chrome.com/docs/extensions/reference/storage/
     storage = {
